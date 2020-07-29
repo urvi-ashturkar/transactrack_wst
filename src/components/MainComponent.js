@@ -36,13 +36,22 @@ class Main extends Component {
       );
     }
 
+    const DishWithId = ({match}) => {
+      return(
+        <Dishdetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+          comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+        />
+      );
+    }
+
     return (
       <div>
         <Header />
         <Switch>
           <Route path="/home" component={HomePage} />   //if url ending in "/home", render view of HomePage component.
           <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />    //Inline definition of component. Didn't say component={Menu} because wanted to pass props.
-          <Route path="/contactus" component={Contact} />
+          <Route path="/menu/:dishId" component={DishWithId} />
+          <Route exact path="/contactus" component={Contact} />
           <Redirect to="/home" />   //if path does not match any of the above, go here.
         </Switch>
         <Footer />
