@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
+import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Dishdetail from './DishdetailComponent';
 import Header from './HeaderComponent';
@@ -51,6 +52,7 @@ class Main extends Component {
           <Route path="/home" component={HomePage} />   //if url ending in "/home", render view of HomePage component.
           <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />    //Inline definition of component. Didn't say component={Menu} because wanted to pass props.
           <Route path="/menu/:dishId" component={DishWithId} />
+          <Route exact path="/aboutus" component={() => <About leaders={this.state.leaders} />} />
           <Route exact path="/contactus" component={Contact} />
           <Redirect to="/home" />   //if path does not match any of the above, go here.
         </Switch>
