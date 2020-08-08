@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../node_modules/bootstrap-social/node_modules/font-awesome/css/font-awesome.min.css';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
 import 'bootstrap-social/bootstrap-social.css';
 import './index.css';   //imported after bootstrap so that custom css can override bootstrap.
 import App from './App';
