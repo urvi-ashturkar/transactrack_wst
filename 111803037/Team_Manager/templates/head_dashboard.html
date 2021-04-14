@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+    {% if title %}
+        <title>Team Manager - {{ title }}</title>
+    {% else %}
+        <title>Team Manager</title>
+    {% endif %}
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div>
+              <h1 class="navbar-brand">Dashboard</h1>
+              <!-- <br> -->
+              {% if session_data['portfolio'] %}
+                <h3 class="navbar-brand">{{ session_data['username'] }} | {{ session_data['role'] }}, {{ session_data['portfolio'] }}</h3>
+              {% else %}
+                <h3 class="navbar-brand">{{ session_data['username'] }} | {{ session_data['role'] }}</h3>
+              {% endif %}
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav ml-auto">
+              <a class="nav-item nav-link" href="{{ url_for('profile') }}">Edit Profile</a>
+              <a class="nav-item nav-link" href="{{ url_for('login') }}">Logout</a>
+            </div>
+      </nav>
+    </header>
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+      </div>
+      <h2>My Tasks</h2>
+      <br>
+      <div class="row">
+        <div class="col-md-8">
+          {% for task in task_list %}
+          <article class="media content-section">
+            <div class="media-body">
+              <div class="article-metadata">
+                <h2 class="article-title">{{ task['task_name'] }}</h2>
+                <p class="article-content">Due: {{ task['task_deadline'] }}</p>
+              </div>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('record_txn', task_id=task['task_id']) }}">Record Transaction</a>
+              <a class="btn btn-primary btn-sm mt-1 mb-1" href="{{ url_for('delegate', task_id=task['task_id']) }}">Delegate</a>
+              <button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Mark as complete</button>
+            </div>
+          </article>
+          <!-- Modal -->
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModalLabel">Mark task complete? This action cannot be undone.</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <form method="POST">
+                    <input class="btn btn-danger" type="submit" value="Confirm">
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col-md-4">
+          {% block content %}{% endblock content %}
+        </div>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript
+    JQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
