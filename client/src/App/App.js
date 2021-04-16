@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import "./App.css";
 import Login from "./pages/Login";
-import Portfolio from "./pages/Portfolio";
+import Register from "./pages/Register";
 
 class App extends Component {
   render() {
@@ -12,7 +12,8 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route path="/portfolio" component={Portfolio} />
+          <Route exact path="/login" component={Login} />
+          <Route path="/register" component={Register} />
         </Switch>
       </div>
     );
