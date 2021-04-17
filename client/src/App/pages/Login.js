@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import cover from "../cover.jpg"
-import { validateFields } from '../Validation';
-import classnames from 'classnames';
-
+import cover from "../cover.jpg";
+import { validateFields } from "../Validation";
+import classnames from "classnames";
+import axios from "axios";
 const initialState = {
   mis: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   password: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   submitCalled: false,
-  allFieldsValidated: false
+  allFieldsValidated: false,
 };
 
 class Login extends Component {
@@ -28,15 +28,15 @@ class Login extends Component {
     const field = evt.target.name;
 
     if (
-      this.state[field]['validateOnChange'] === false &&
+      this.state[field]["validateOnChange"] === false &&
       this.state.submitCalled === false
     ) {
-      this.setState(state => ({
+      this.setState((state) => ({
         [field]: {
           ...state[field],
           validateOnChange: true,
-          error: validationFunc(state[field].value)
-        }
+          error: validationFunc(state[field].value),
+        },
       }));
     }
     return;
@@ -45,12 +45,12 @@ class Login extends Component {
   handleChange(validationFunc, evt) {
     const field = evt.target.name;
     const fieldVal = evt.target.value;
-    this.setState(state => ({
+    this.setState((state) => ({
       [field]: {
         ...state[field],
         value: fieldVal,
-        error: state[field]['validateOnChange'] ? validationFunc(fieldVal) : ''
-      }
+        error: state[field]["validateOnChange"] ? validationFunc(fieldVal) : "",
+      },
     }));
   }
 
@@ -60,23 +60,31 @@ class Login extends Component {
     const { mis, password } = this.state;
     const misError = validateFields.validateMis(mis.value);
     const passwordError = validateFields.validatePassword(password.value);
-    if ([misError, passwordError].every(e => e === false)) {
+    if ([misError, passwordError].every((e) => e === false)) {
       // no errors. Submit the form
-      console.log('success');
+      console.log("success");
       this.setState({ ...initialState, allFieldsValidated: true });
+      axios
+        .get("http://localhost:5000/login")
+        .then((res) => {
+          console.log("axios success" + res);
+        })
+        .catch((err) => {
+          console.log("fail" + err);
+        });
     } else {
       // update the state with errors
-      this.setState(state => ({
+      this.setState((state) => ({
         mis: {
           ...state.mis,
           validateOnChange: true,
-          error: misError
+          error: misError,
         },
         password: {
           ...state.password,
           validateOnChange: true,
-          error: passwordError
-        }
+          error: passwordError,
+        },
       }));
     }
   }
@@ -87,22 +95,19 @@ class Login extends Component {
     return (
       <div className="App">
         <main role="main" class="container">
-
           <div className="row" id="login-content">
-
             <div className="col-12 col-md-8">
-              <img src={cover} id="cover" alt="team" width="100%"/>
+              <img src={cover} id="cover" alt="team" width="100%" />
             </div>
 
             <div className="content-section col-12 col-md-4">
-
               {allFieldsValidated && (
                 <p className="text-success text-center">
                   Go to dashboard from here.
                 </p>
               )}
 
-              <form onSubmit={evt => this.handleSubmit(evt)}>
+              <form onSubmit={(evt) => this.handleSubmit(evt)}>
                 <fieldset className="form-group">
                   <legend className="border-bottom mb-4">Log In</legend>
                   {/* Mis field */}
@@ -114,14 +119,14 @@ class Login extends Component {
                       value={mis.value}
                       placeholder="Enter college-issued MIS"
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': mis.error === false },
-                        { 'is-invalid': mis.error }
+                        "form-control",
+                        { "is-valid": mis.error === false },
+                        { "is-invalid": mis.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateMis, evt)
                       }
-                      onNotFocus={evt =>
+                      onNotFocus={(evt) =>
                         this.handleNotFocus(validateFields.validateMis, evt)
                       }
                     />
@@ -137,22 +142,29 @@ class Login extends Component {
                       value={password.value}
                       placeholder="Enter your password"
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': password.error === false },
-                        { 'is-invalid': password.error }
+                        "form-control",
+                        { "is-valid": password.error === false },
+                        { "is-invalid": password.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validatePassword, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validatePassword, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validatePassword,
+                          evt
+                        )
                       }
                     />
                     <div className="invalid-feedback">{password.error}</div>
                   </div>
                 </fieldset>
                 <div className="form-group">
-                  <button type="submit" className="btn btn-info" onMouseDown={() => this.setState({ submitCalled: true })}>
+                  <button
+                    type="submit"
+                    className="btn btn-info"
+                    onMouseDown={() => this.setState({ submitCalled: true })}
+                  >
                     Submit
                   </button>
                 </div>
@@ -162,12 +174,14 @@ class Login extends Component {
               </form>
               <div className="border-top pt-3">
                 <small className="text-muted">
-                  New to the team? <a className="ml-2" href="/register">Sign Up Now</a>
+                  New to the team?{" "}
+                  <a className="ml-2" href="/register">
+                    Sign Up Now
+                  </a>
                 </small>
               </div>
             </div>
           </div>
-
         </main>
       </div>
     );

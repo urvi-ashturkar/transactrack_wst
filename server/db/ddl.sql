@@ -12,7 +12,7 @@ create table if not exists team_member(
   join_date date,
   leave_date date,
   position varchar(15) not null,
-  password char(32) not null,
+  password varchar(60) NOT NULL,
 	primary key (mis)
 );
 

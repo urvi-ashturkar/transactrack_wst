@@ -1,75 +1,76 @@
 import React, { Component } from "react";
-import { validateFields } from '../Validation';
-import classnames from 'classnames';
+import { validateFields } from "../Validation";
+import classnames from "classnames";
+import axios from "axios";
 
 const initialState = {
   mis: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   first_name: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   last_name: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   email: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   phone: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   dob: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   cgpa: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   is_hostelite: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   join_date: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   position: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   portfolio: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   password: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   confirm_password: {
-    value: '',
+    value: "",
     validateOnChange: false,
-    error: ''
+    error: "",
   },
   submitCalled: false,
-  allFieldsValidated: false
+  allFieldsValidated: false,
 };
 
 class Register extends Component {
@@ -82,15 +83,15 @@ class Register extends Component {
     const field = evt.target.name;
 
     if (
-      this.state[field]['validateOnChange'] === false &&
+      this.state[field]["validateOnChange"] === false &&
       this.state.submitCalled === false
     ) {
-      this.setState(state => ({
+      this.setState((state) => ({
         [field]: {
           ...state[field],
           validateOnChange: true,
-          error: validationFunc(state[field].value)
-        }
+          error: validationFunc(state[field].value),
+        },
       }));
     }
     return;
@@ -99,19 +100,33 @@ class Register extends Component {
   handleChange(validationFunc, evt) {
     const field = evt.target.name;
     const fieldVal = evt.target.value;
-    this.setState(state => ({
+    this.setState((state) => ({
       [field]: {
         ...state[field],
         value: fieldVal,
-        error: state[field]['validateOnChange'] ? validationFunc(fieldVal) : ''
-      }
+        error: state[field]["validateOnChange"] ? validationFunc(fieldVal) : "",
+      },
     }));
   }
 
   handleSubmit(evt) {
     evt.preventDefault();
     // validate all fields
-    const { mis, first_name, last_name, email, phone, dob, cgpa, is_hostelite, join_date, position, portfolio, password, confirm_password } = this.state;
+    const {
+      mis,
+      first_name,
+      last_name,
+      email,
+      phone,
+      dob,
+      cgpa,
+      is_hostelite,
+      join_date,
+      position,
+      portfolio,
+      password,
+      confirm_password,
+    } = this.state;
     const misError = validateFields.validateMis(mis.value);
     const first_nameError = validateFields.validateFirstName(first_name.value);
     const last_nameError = validateFields.validateLastName(last_name.value);
@@ -119,90 +134,138 @@ class Register extends Component {
     const phoneError = validateFields.validatePhone(phone.value);
     const dobError = validateFields.validateDob(dob.value);
     const cgpaError = validateFields.validateCgpa(cgpa.value);
-    const is_hosteliteError = validateFields.validateIsHostelite(is_hostelite.value);
+    const is_hosteliteError = validateFields.validateIsHostelite(
+      is_hostelite.value
+    );
     const join_dateError = validateFields.validateJoinDate(join_date.value);
     const positionError = validateFields.validatePosition(position.value);
-    const portfolioError = validateFields.validatePortfolio(portfolio.value, position.value);
+    const portfolioError = validateFields.validatePortfolio(
+      portfolio.value,
+      position.value
+    );
     const passwordError = validateFields.validatePassword(password.value);
-    const confirm_passwordError = validateFields.validateConfirmPassword(confirm_password.value, password.value);
-    if ([misError, first_nameError, last_nameError, emailError, phoneError, dobError, cgpaError, is_hosteliteError, join_dateError, positionError, portfolioError, passwordError, confirm_passwordError].every(e => e === false)) {
+    const confirm_passwordError = validateFields.validateConfirmPassword(
+      confirm_password.value,
+      password.value
+    );
+    if (
+      [
+        misError,
+        first_nameError,
+        last_nameError,
+        emailError,
+        phoneError,
+        dobError,
+        cgpaError,
+        is_hosteliteError,
+        join_dateError,
+        positionError,
+        portfolioError,
+        passwordError,
+        confirm_passwordError,
+      ].every((e) => e === false)
+    ) {
       // no errors. Submit the form
-      console.log('success');
+
       this.setState({ ...initialState, allFieldsValidated: true });
+      console.log("success");
+      axios
+        .post("http://localhost:5000/register", this.state)
+        .then((res) => {
+          console.log("axios success" + res);
+        })
+        .catch((err) => {
+          console.log("fail" + err);
+        });
     } else {
       // update the state with errors
-      this.setState(state => ({
+      this.setState((state) => ({
         mis: {
           ...state.mis,
           validateOnChange: true,
-          error: misError
+          error: misError,
         },
         first_name: {
           ...state.first_name,
           validateOnChange: true,
-          error: first_nameError
+          error: first_nameError,
         },
         last_name: {
           ...state.last_name,
           validateOnChange: true,
-          error: last_nameError
+          error: last_nameError,
         },
         email: {
           ...state.email,
           validateOnChange: true,
-          error: emailError
+          error: emailError,
         },
         phone: {
           ...state.phone,
           validateOnChange: true,
-          error: phoneError
+          error: phoneError,
         },
         dob: {
           ...state.dob,
           validateOnChange: true,
-          error: dobError
+          error: dobError,
         },
         cgpa: {
           ...state.cgpa,
           validateOnChange: true,
-          error: cgpaError
+          error: cgpaError,
         },
         is_hostelite: {
           ...state.is_hostelite,
           validateOnChange: true,
-          error: is_hosteliteError
+          error: is_hosteliteError,
         },
         join_date: {
           ...state.join_date,
           validateOnChange: true,
-          error: join_dateError
+          error: join_dateError,
         },
         position: {
           ...state.position,
           validateOnChange: true,
-          error: positionError
+          error: positionError,
         },
         portfolio: {
           ...state.portfolio,
           validateOnChange: true,
-          error: portfolioError
+          error: portfolioError,
         },
         password: {
           ...state.password,
           validateOnChange: true,
-          error: passwordError
+          error: passwordError,
         },
         confirm_password: {
           ...state.confirm_password,
           validateOnChange: true,
-          error: confirm_passwordError
-        }
+          error: confirm_passwordError,
+        },
       }));
     }
   }
 
   render() {
-    const { mis, first_name, last_name, email, phone, dob, cgpa, is_hostelite, join_date, position, portfolio, password, confirm_password, allFieldsValidated } = this.state;
+    const {
+      mis,
+      first_name,
+      last_name,
+      email,
+      phone,
+      dob,
+      cgpa,
+      is_hostelite,
+      join_date,
+      position,
+      portfolio,
+      password,
+      confirm_password,
+      allFieldsValidated,
+    } = this.state;
 
     return (
       <div className="App">
@@ -210,32 +273,33 @@ class Register extends Component {
           <div class="row">
             <div class="col-md-3"></div>
             <div class="content-section col-md-6" id="form-card">
-
               {allFieldsValidated && (
                 <p className="text-success text-center">
                   Go to login from here.
                 </p>
               )}
 
-              <form onSubmit={evt => this.handleSubmit(evt)}>
+              <form onSubmit={(evt) => this.handleSubmit(evt)}>
                 <fieldset className="form-group">
                   <legend className="border-bottom mb-4">Join the Team</legend>
                   {/* Mis field */}
                   <div className="form-group">
                     <label>MIS ID</label>
+
+                    {/* <input type="text" name="name" onChange={this.handleChange} /> */}
                     <input
                       type="text"
                       name="mis"
                       value={mis.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': mis.error === false },
-                        { 'is-invalid': mis.error }
+                        "form-control",
+                        { "is-valid": mis.error === false },
+                        { "is-invalid": mis.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateMis, evt)
                       }
-                      onNotFocus={evt =>
+                      onNotFocus={(evt) =>
                         this.handleNotFocus(validateFields.validateMis, evt)
                       }
                     />
@@ -250,15 +314,18 @@ class Register extends Component {
                       name="first_name"
                       value={first_name.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': first_name.error === false },
-                        { 'is-invalid': first_name.error }
+                        "form-control",
+                        { "is-valid": first_name.error === false },
+                        { "is-invalid": first_name.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateFirstName, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validateFirstName, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validateFirstName,
+                          evt
+                        )
                       }
                     />
                     <div className="invalid-feedback">{first_name.error}</div>
@@ -272,15 +339,18 @@ class Register extends Component {
                       name="last_name"
                       value={last_name.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': last_name.error === false },
-                        { 'is-invalid': last_name.error }
+                        "form-control",
+                        { "is-valid": last_name.error === false },
+                        { "is-invalid": last_name.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateLastName, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validateLastName, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validateLastName,
+                          evt
+                        )
                       }
                     />
                     <div className="invalid-feedback">{last_name.error}</div>
@@ -294,14 +364,14 @@ class Register extends Component {
                       name="email"
                       value={email.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': email.error === false },
-                        { 'is-invalid': email.error }
+                        "form-control",
+                        { "is-valid": email.error === false },
+                        { "is-invalid": email.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateEmail, evt)
                       }
-                      onNotFocus={evt =>
+                      onNotFocus={(evt) =>
                         this.handleNotFocus(validateFields.validateEmail, evt)
                       }
                     />
@@ -316,14 +386,14 @@ class Register extends Component {
                       name="phone"
                       value={phone.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': phone.error === false },
-                        { 'is-invalid': phone.error }
+                        "form-control",
+                        { "is-valid": phone.error === false },
+                        { "is-invalid": phone.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validatePhone, evt)
                       }
-                      onNotFocus={evt =>
+                      onNotFocus={(evt) =>
                         this.handleNotFocus(validateFields.validatePhone, evt)
                       }
                     />
@@ -339,14 +409,14 @@ class Register extends Component {
                       placeholder="YYYY-MM-DD"
                       value={dob.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': dob.error === false },
-                        { 'is-invalid': dob.error }
+                        "form-control",
+                        { "is-valid": dob.error === false },
+                        { "is-invalid": dob.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateDob, evt)
                       }
-                      onNotFocus={evt =>
+                      onNotFocus={(evt) =>
                         this.handleNotFocus(validateFields.validateDob, evt)
                       }
                     />
@@ -362,14 +432,14 @@ class Register extends Component {
                       pattern="^\d*(\.\d{0,2})?$"
                       value={cgpa.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': cgpa.error === false },
-                        { 'is-invalid': cgpa.error }
+                        "form-control",
+                        { "is-valid": cgpa.error === false },
+                        { "is-invalid": cgpa.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateCgpa, evt)
                       }
-                      onNotFocus={evt =>
+                      onNotFocus={(evt) =>
                         this.handleNotFocus(validateFields.validateCgpa, evt)
                       }
                     />
@@ -386,15 +456,21 @@ class Register extends Component {
                       style={{ width: 20, height: 20, display: "inline" }}
                       value={is_hostelite.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': is_hostelite.error === false },
-                        { 'is-invalid': is_hostelite.error }
+                        "form-control",
+                        { "is-valid": is_hostelite.error === false },
+                        { "is-invalid": is_hostelite.error }
                       )}
-                      onChange={evt =>
-                        this.handleChange(validateFields.validateIsHostelite, evt)
+                      onChange={(evt) =>
+                        this.handleChange(
+                          validateFields.validateIsHostelite,
+                          evt
+                        )
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validateIsHostelite, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validateIsHostelite,
+                          evt
+                        )
                       }
                     />
                     <div className="invalid-feedback">{is_hostelite.error}</div>
@@ -409,15 +485,18 @@ class Register extends Component {
                       placeholder="YYYY-MM-DD"
                       value={join_date.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': join_date.error === false },
-                        { 'is-invalid': join_date.error }
+                        "form-control",
+                        { "is-valid": join_date.error === false },
+                        { "is-invalid": join_date.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validateJoinDate, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validateJoinDate, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validateJoinDate,
+                          evt
+                        )
                       }
                     />
                     <div className="invalid-feedback">{join_date.error}</div>
@@ -429,15 +508,18 @@ class Register extends Component {
                     <select
                       name="position"
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': position.error === false },
-                        { 'is-invalid': position.error }
+                        "form-control",
+                        { "is-valid": position.error === false },
+                        { "is-invalid": position.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validatePosition, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validatePosition, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validatePosition,
+                          evt
+                        )
                       }
                     >
                       <option value=" "> </option>
@@ -454,15 +536,18 @@ class Register extends Component {
                     <select
                       name="portfolio"
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': portfolio.error === false },
-                        { 'is-invalid': portfolio.error }
+                        "form-control",
+                        { "is-valid": portfolio.error === false },
+                        { "is-invalid": portfolio.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validatePortfolio, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validatePortfolio, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validatePortfolio,
+                          evt
+                        )
                       }
                     >
                       <option value=" "> </option>
@@ -490,15 +575,18 @@ class Register extends Component {
                       name="password"
                       value={password.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': password.error === false },
-                        { 'is-invalid': password.error }
+                        "form-control",
+                        { "is-valid": password.error === false },
+                        { "is-invalid": password.error }
                       )}
-                      onChange={evt =>
+                      onChange={(evt) =>
                         this.handleChange(validateFields.validatePassword, evt)
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validatePassword, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validatePassword,
+                          evt
+                        )
                       }
                     />
                     <div className="invalid-feedback">{password.error}</div>
@@ -512,29 +600,44 @@ class Register extends Component {
                       name="confirm_password"
                       value={confirm_password.value}
                       className={classnames(
-                        'form-control',
-                        { 'is-valid': confirm_password.error === false },
-                        { 'is-invalid': confirm_password.error }
+                        "form-control",
+                        { "is-valid": confirm_password.error === false },
+                        { "is-invalid": confirm_password.error }
                       )}
-                      onChange={evt =>
-                        this.handleChange(validateFields.validateConfirmPassword, evt)
+                      onChange={(evt) =>
+                        this.handleChange(
+                          validateFields.validateConfirmPassword,
+                          evt
+                        )
                       }
-                      onNotFocus={evt =>
-                        this.handleNotFocus(validateFields.validateConfirmPassword, evt)
+                      onNotFocus={(evt) =>
+                        this.handleNotFocus(
+                          validateFields.validateConfirmPassword,
+                          evt
+                        )
                       }
                     />
-                    <div className="invalid-feedback">{confirm_password.error}</div>
+                    <div className="invalid-feedback">
+                      {confirm_password.error}
+                    </div>
                   </div>
                 </fieldset>
                 <div className="form-group">
-                  <button type="submit" className="btn btn-info" onMouseDown={() => this.setState({ submitCalled: true })}>
+                  <button
+                    type="submit"
+                    className="btn btn-info"
+                    onMouseDown={() => this.setState({ submitCalled: true })}
+                  >
                     Sign Up
                   </button>
                 </div>
 
                 <div class="border-top pt-3">
                   <small class="text-muted">
-                    Already Have An Account? <a class="ml-2" href="/login">Sign In</a>
+                    Already Have An Account?{" "}
+                    <a class="ml-2" href="/login">
+                      Sign In
+                    </a>
                   </small>
                 </div>
               </form>
