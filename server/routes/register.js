@@ -6,19 +6,21 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 var bcrypt = require("bcryptjs");
 
 let saltRounds = 5;
+
 Router.post("/", (req, res) => {
   console.log("in router.post" + req);
   const { mis, first_name, password } = req.body;
   console.log(mis, first_name, password);
   console.log("req body password" + req.body.password);
   bcrypt.hash(req.body.password.value, saltRounds, (err, hash) => {
-    let query = `insert into team_member (mis, first_name, last_name, email, phone, dob, cgpa, is_hostelite, join_date, position, password) select ${req.body.mis.value}, "${req.body.first_name.value}", "${req.body.last_name.value}", "${req.body.email.value}", ${req.body.phone.value}, '${req.body.dob.value}', ${req.body.cgpa.value}, 1, '${req.body.join_date.value}', "${req.body.position.value}","${hash}" where not exists (select mis from team_member where mis = ${req.body.mis.value});`;
+    let query = `insert into team_member (mis, first_name, last_name, email, phone, position, password, portfolio) select ${req.body.mis.value}, "${req.body.first_name.value}", "${req.body.last_name.value}", "${req.body.email.value}", ${req.body.phone.value}, "${req.body.position.value}","${hash}", "${req.body.portfolio.value}" where not exists (select mis from team_member where mis = ${req.body.mis.value});`;
     console.log(query);
     con.query(query, (err, result) => {
       if (err) {
         res.status(400).send(err.message);
       }
       return res.status(200).send(result);
+      //
     });
   });
 

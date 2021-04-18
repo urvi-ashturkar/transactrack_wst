@@ -3,7 +3,7 @@ const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "elephant9",
-  database: "teamDB",
+  database: "transactionDB",
   multipleStatements: true,
 });
 
