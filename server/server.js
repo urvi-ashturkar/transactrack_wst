@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const LoginRoutes = require("./routes/login");
 const RegisterRoutes = require("./routes/register");
-const SecRoutes = require("./routes/secretary_dashboard");
+const HeadRoutes = require("./routes/head_dashboard");
 const cors = require("cors");
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, "../client/App")));
 app.use(bodyParser.json());
 app.use("/login", LoginRoutes);
 app.use("/register", RegisterRoutes);
-app.use("/sec", SecRoutes);
+app.use("/head", HeadRoutes);
 
 // const corsOptions = {
 //   origin: ["http://localhost:3000"],

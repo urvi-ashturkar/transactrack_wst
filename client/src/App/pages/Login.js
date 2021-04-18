@@ -65,9 +65,9 @@ class Login extends Component {
       console.log("success");
       this.setState({ ...initialState, allFieldsValidated: true });
       axios
-        .get("http://localhost:5000/login")
+        .post("http://localhost:5000/login", this.state)
         .then((res) => {
-          console.log("axios success" + res);
+          console.log("axios success", res.data[0]);
         })
         .catch((err) => {
           console.log("fail" + err);

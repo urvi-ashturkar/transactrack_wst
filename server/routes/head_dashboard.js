@@ -4,11 +4,11 @@ const con = require("../connection");
 var extend = require("util")._extend;
 
 //Router to GET specific learner detail from the MySQL database
-Router.get("/:id", (req, res) => {
+Router.get("/", (req, res) => {
   //console.log(req.params);
   q =
-    "select distinct first_name, last_name, task_name, deadline from (team_member JOIN works_on) JOIN task where team_member.mis = ? and discharge_date IS NULL;";
-  m = req.params.id.slice(1);
+    "select distinct first_name, last_name, position, task_name, deadline from (team_member JOIN works_on) JOIN task where team_member.mis = ? and discharge_date IS NULL;";
+  m = req.body.mis.value;
   con.query(q, m, (err, rows, fields) => {
     if (!err) {
       console.log(rows);
