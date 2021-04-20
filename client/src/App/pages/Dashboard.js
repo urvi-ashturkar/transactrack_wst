@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 import { validateFields } from "../Validation";
 import classnames from "classnames";
 import axios from "axios";
@@ -6,12 +6,10 @@ import {reactLocalStorage} from 'reactjs-localstorage';
 import {Redirect, useHistory} from "react-router-dom";
 import {
     Button,
-    Navbar,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    Container
+    Navbar, NavbarBrand, Nav, NavItem, NavLink,
+    Container,
+    Row, Col,
+    Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
 import "../App.css";
 
@@ -19,10 +17,15 @@ const Dashboard = () => {
 
   const user_details = reactLocalStorage.getObject("user_details");
   const history = useHistory();
+  const [modal_open, setModalOpen] = useState(false);
 
   function logout() {
     reactLocalStorage.clear();
     history.push("/login");
+  }
+
+  function toggle() {
+    setModalOpen(!modal_open);
   }
 
   return(
@@ -41,12 +44,64 @@ const Dashboard = () => {
             }
           </NavbarBrand>
           <Nav className="ml-auto" navbar>
-          <NavItem>
-            <Button className="btn btn-default" onClick={logout}>Logout</Button>
-          </NavItem>
+            <NavItem>
+              <Button className="btn btn-default" onClick={logout}>Logout</Button>
+            </NavItem>
           </Nav>
         </Container>
       </Navbar>
+
+      <main role="main" className="toplookout container">
+        {(user_details.position === "Secretary") || (user_details.position === "Portfolio Head" && user_details.portfolio === "Accounts")
+          ?
+        <h2>All transactions</h2>
+          :
+        <h2>My transactions</h2>
+        }
+        <br/>
+        <Button className="btn btn-warning btn-lg" onClick={toggle}>Record New</Button>
+        <br/><br/>
+        <Row>
+          <Col sm={10}>
+            <article className="media content-section">
+              <div className="media-body">
+                <div className="article-metadata">
+                  <h3 className="article-title">
+                    <b>Venus Traders</b>
+                    <span className="badge badge-pill badge-warning ml-3">+ 3400</span>
+                  </h3>
+                  <h5 className="ml-auto"><b>TXN# 872133000G7 &nbsp; | &nbsp; GST# 9726494692692</b></h5>
+                  <p className="article-content txn-memo">Mount board, oil paints, acrylic paints, paintbrushes, masking tape, corrugated sheets for decor work.</p>
+                </div>
+                <Row className="txn-pills">
+                  <Col sm={3}>
+                    <span className="badge badge-pill badge-lt-blue">12/04/2021</span>
+                  </Col>
+                  <Col sm={4}>
+                    <span className="badge badge-pill badge-lt-blue">Print and Purchase</span>
+                  </Col>
+                  <Col sm={5}>
+                    <span className="badge badge-pill badge-lt-blue">Atharva Soman</span>
+                  </Col>
+                </Row>
+              </div>
+            </article>
+          </Col>
+        </Row>
+        <Modal
+          isOpen={modal_open}
+          toggle={toggle}
+        >
+          <ModalHeader>Record New Transaction</ModalHeader>
+          <ModalBody>
+            <h1>hello</h1>
+          </ModalBody>
+          <ModalFooter>
+            <Button className="btn btn-info">Save</Button>
+            <Button className="btn btn-default" onClick={toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      </main>
     </React.Fragment>
   );
 }

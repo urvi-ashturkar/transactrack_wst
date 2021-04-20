@@ -141,6 +141,7 @@ const Login = () => {
                     type="text"
                     name="mis"
                     placeholder="Enter college-issued MIS"
+                    required
                   />
                 </div>
 
@@ -151,6 +152,7 @@ const Login = () => {
                     type="password"
                     name="password"
                     placeholder="Enter your password"
+                    required
                   />
                 </div>
               </fieldset>
