@@ -4,8 +4,8 @@ const con = require("../connection");
 const bcrypt = require("bcryptjs");
 Router.post("/", (req, res) => {
   //console.log(req);
-  console.log("req.body.mis.value: ", req.body.mis.value);
-  query = `SELECT mis, password, first_name, last_name, position, portfolio FROM team_member WHERE mis = ${req.body.mis.value}`;
+  console.log("req.body.mis: ", req.body.mis);
+  query = `SELECT mis, password, first_name, last_name, position, portfolio FROM team_member WHERE mis = ${req.body.mis}`;
   con.query(query, (err, result) => {
     if (err) {
       return res.status(400).send(err.message);
@@ -16,13 +16,13 @@ Router.post("/", (req, res) => {
       let json = JSON.parse(string);
       console.log(">> json: ", json);
       bcrypt.compare(
-        req.body.password.value,
+        req.body.password,
         json[0].password,
         (error, response) => {
           if (response) {
             //req.session.user = result;
             //console.log(`After login ${req.session.user}`)
-            console.log("req pass: ", req.body.password.value);
+            console.log("req pass: ", req.body.password);
             console.log("json: ", json[0].password);
             console.log("json - ", json);
             res.send(json);
@@ -30,7 +30,7 @@ Router.post("/", (req, res) => {
             res.send({
               message: "Incorrect username or password.\nTry again.",
             });
-            console.log("req pass: ", req.body.password.value);
+            console.log("req pass: ", req.body.password);
             console.log("json: ", json[0].password);
             console.log("json - ", json);
           }

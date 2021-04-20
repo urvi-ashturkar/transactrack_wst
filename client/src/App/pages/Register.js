@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import {Redirect, useHistory} from "react-router-dom";
 import { validateFields } from "../Validation";
 import classnames from "classnames";
 import axios from "axios";
+import Login from "./Login";
 
 const initialState = {
+  redirect: false,
   mis: {
     value: "",
     validateOnChange: false,
@@ -77,6 +80,17 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
+  };
+
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+    })
+  }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/login' />
+    }
   }
 
   handleNotFocus(validationFunc, evt) {
@@ -173,6 +187,7 @@ class Register extends Component {
         .post("http://localhost:5000/register", this.state)
         .then((res) => {
           console.log("axios success" + res);
+          this.setRedirect();
         })
         .catch((err) => {
           console.log("fail" + err);
@@ -269,15 +284,11 @@ class Register extends Component {
 
     return (
       <div className="App">
+        {this.renderRedirect()}
         <main role="main" class="container" id="form-wrapper">
           <div class="row">
             <div class="col-md-3"></div>
             <div class="content-section col-md-6" id="form-card">
-              {allFieldsValidated && (
-                <p className="text-success text-center">
-                  Go to login from here.
-                </p>
-              )}
 
               <form onSubmit={(evt) => this.handleSubmit(evt)}>
                 <fieldset className="form-group">

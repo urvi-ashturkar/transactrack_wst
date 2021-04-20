@@ -1,4 +1,5 @@
-use transactionDB
+create database if not exists transactionDB;
+use transactionDB;
 
 create table if not exists team_member(
   mis char(9),

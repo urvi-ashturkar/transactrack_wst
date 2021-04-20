@@ -136,7 +136,6 @@ class ValidateFields {
   }
 
   validatePortfolio(portfolio, pos) {
-    console.log(pos);
 
     if (validator.isEmpty(portfolio) &&
       pos !== "Secretary") {
@@ -165,8 +164,6 @@ class ValidateFields {
     if (validator.isEmpty(confirm_password)) {
       return 'Password confirmation is required';
     } else if (confirm_password !== pwd) {
-      console.log(pwd);
-      console.log(confirm_password);
       return 'Password does not match';
     }
     return false;
