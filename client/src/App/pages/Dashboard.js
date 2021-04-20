@@ -4,8 +4,10 @@ import classnames from "classnames";
 import axios from "axios";
 import {reactLocalStorage} from 'reactjs-localstorage';
 import {Redirect, useHistory} from "react-router-dom";
+import { Label, Control, LocalForm, Errors } from 'react-redux-form';
 import {
     Button,
+    Input,
     Navbar, NavbarBrand, Nav, NavItem, NavLink,
     Container,
     Row, Col,
@@ -26,6 +28,21 @@ const Dashboard = () => {
 
   function toggle() {
     setModalOpen(!modal_open);
+  }
+
+  function handleSubmit(e) {
+    const txn_info = {
+      txn_id: e.txn_no,
+      date: e.date,
+      vendor: e.vendor,
+      gst: e.gst_no,
+      amount: e.amount,
+      memo: e.memo,
+      mis: user_details.mis,
+    }
+    console.log(e);
+    console.log(txn_info.mis, txn_info.date);
+    setModalOpen(false);
   }
 
   return(
@@ -94,12 +111,69 @@ const Dashboard = () => {
         >
           <ModalHeader>Record New Transaction</ModalHeader>
           <ModalBody>
-            <h1>hello</h1>
+            <LocalForm
+              model="e"
+              onSubmit={ (e) => handleSubmit(e) }
+            >
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="txn_no">Transaction Reference ID</label>
+                <Control.text model=".txn_no" name="txn_no" className="form-control" />
+                <Errors
+                  className="text-danger"
+                  model=".txn_no"
+                  show="touched"
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label>Transaction Date</label>
+                {/*<Input type="date" model=".date" name="date" className="form-control" />*/}
+                <Control.text model=".date" name="date" className="form-control" />
+                <Errors
+                  className="text-danger"
+                  model=".date"
+                  show="touched"
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="vendor">Vendor</label>
+                <Control.text model=".vendor" name="vendor" className="form-control" />
+                <Errors
+                  className="text-danger"
+                  model=".vendor"
+                  show="touched"
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="gst_no">GST No.</label>
+                <Control.text model=".gst_no" name="gst_no" className="form-control" />
+                <Errors
+                  className="text-danger"
+                  model=".gst_no"
+                  show="touched"
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="amount">Transaction Amount (-ve for expenditure)</label>
+                <Control.text model=".amount" name="amount" className="form-control" />
+                <Errors
+                  className="text-danger"
+                  model=".amount"
+                  show="touched"
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="memo">Brief memo of transaction</label>
+                <Control.textarea model=".memo" name="memo" className="form-control" />
+                <Errors
+                  className="text-danger"
+                  model=".memo"
+                  show="touched"
+                />
+              </Row>
+              <Button className="btn btn-success row-btns" type="submit">Save</Button>
+              <Button className="btn btn-default row-btns" onClick={toggle}>Cancel</Button>
+            </LocalForm>
           </ModalBody>
-          <ModalFooter>
-            <Button className="btn btn-info">Save</Button>
-            <Button className="btn btn-default" onClick={toggle}>Cancel</Button>
-          </ModalFooter>
         </Modal>
       </main>
     </React.Fragment>
