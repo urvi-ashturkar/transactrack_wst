@@ -105,13 +105,18 @@ const Login = () => {
       mis: e.target.mis.value,
       password: e.target.password.value,
     };
+    console.log("creds: ", creds);
     axios
       .post("http://localhost:5000/login", creds)
       .then((res) => {
-        console.log("axios success", res.data[0]);
+        console.log("res:", res)
+        console.log("res.data:", res.data)
+        console.log("res.data[0]:", res.data[0])
+        console.log("axios success in login", res.data[0]);
         const thisUser = res.data[0];
         {/*setUserDetails({...user_details, thisUser});*/}
-        reactLocalStorage.setObject("user_details", thisUser);
+        // con
+       reactLocalStorage.setObject("user_details", thisUser);
         history.push("/dashboard");
       })
       .catch((err) => {

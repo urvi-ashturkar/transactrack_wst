@@ -21,6 +21,24 @@ const Dashboard = () => {
   const history = useHistory();
   const [modal_open, setModalOpen] = useState(false);
 
+  //Mugdha : axios.get needed to get the list of all transactions. 
+  //response.data gives the entire array of all transactions. Loop through it to display
+
+  console.log(user_details);
+  axios.get('/dashboard', {
+    params: {
+      mis: user_details.mis,
+    }
+  })
+  .then(function (response) {
+    console.log("axios success in dashboard ", response.data);
+  })
+  .catch((err) => {
+    console.log("axios fail in  dashboard ", err);
+  });
+  console.log("after axios\n");
+  
+
   function logout() {
     reactLocalStorage.clear();
     history.push("/login");
@@ -42,6 +60,23 @@ const Dashboard = () => {
     }
     console.log(e);
     console.log(txn_info.mis, txn_info.date);
+    //Mugdha :
+    axios
+      .post("http://localhost:5000/dashboard", txn_info)
+      .then((res) => {
+        console.log("res:", res)
+        console.log("res.data:", res.data)
+        console.log("res.data[0]:", res.data[0])
+        console.log("axios success in login", res.data[0]);
+        const thisUser = res.data[0];
+        {/*setUserDetails({...user_details, thisUser});*/}
+        // con
+       reactLocalStorage.setObject("user_details", thisUser);
+        history.push("/dashboard");
+      })
+      .catch((err) => {
+        console.log("fail" + err);
+      });
     setModalOpen(false);
   }
 

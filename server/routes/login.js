@@ -15,6 +15,8 @@ Router.post("/", (req, res) => {
       console.log(">> string: ", string);
       let json = JSON.parse(string);
       console.log(">> json: ", json);
+      console.log(`req pass: ${req.body.password} is of the type ${ typeof req.body.password}`);
+      console.log(`json pass: ${json[0].password} is of the type ${ typeof json[0].password}`);
       bcrypt.compare(
         req.body.password,
         json[0].password,
@@ -22,14 +24,13 @@ Router.post("/", (req, res) => {
           if (response) {
             //req.session.user = result;
             //console.log(`After login ${req.session.user}`)
-            console.log("req pass: ", req.body.password);
-            console.log("json: ", json[0].password);
             console.log("json - ", json);
+            json[0].message = "Authentication Successful.\n"
             res.send(json);
           } else {
-            res.send({
+            res.send([{
               message: "Incorrect username or password.\nTry again.",
-            });
+            }]);
             console.log("req pass: ", req.body.password);
             console.log("json: ", json[0].password);
             console.log("json - ", json);
@@ -37,7 +38,7 @@ Router.post("/", (req, res) => {
         }
       );
     } else {
-      res.send({ message: "Incorrect username or password.\nTry again." });
+      res.send([{ message: "Incorrect username or password.\nTry again." }]);
     }
   });
 });
