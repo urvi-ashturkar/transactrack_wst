@@ -24,6 +24,18 @@ const Dashboard = () => {
   const [transactions, setTransactions] = useState();
   //Mugdha : axios.get needed to get the list of all transactions.
   //response.data gives the entire array of all transactions. Loop through it to display
+
+  const required = (val) => val && val.length;
+  const maxLength = (len) => (val) => !(val) || (val.length <= len);
+  const minLength = (len) => (val) => (val) && (val.length >= len);
+  const isLength = (len) => (val) => (val) && (val.length === len);
+  const matchPattern = (re) => (val) => re.test(val);
+  const isPast = (val) => {
+    var today = new Date().getTime();
+    val = new Date(val).getTime();
+    return (today - val) >= 0;
+  }
+
 console.log(user_details);
   const mis_param = user_details.mis;
   const pos = user_details.position;
@@ -55,7 +67,7 @@ console.log(user_details);
   // const mis_param = user_details.mis;
   // const pos = user_details.position;
   // const portf = user_details.portfolio;
-  
+
   console.log("after axios\n");
 
 
@@ -104,7 +116,7 @@ console.log(user_details);
     setModalOpen(false);
   }
 
-  //const transactions = reactLocalStorage.getObject("transactions");
+  // const transactions = reactLocalStorage.getObject("transactions");
   console.log(transactions);
   const transactions_list = transactions.map((txn) => (
     <React.Fragment key={txn.transaction_id}>
@@ -204,57 +216,101 @@ console.log(user_details);
             >
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="txn_no">Transaction Reference ID</label>
-                <Control.text model=".txn_no" name="txn_no" className="form-control" />
+                <Control.text model=".txn_no" name="txn_no" className="form-control"
+                  validators={{
+                    required, minLength: minLength(3), matchPattern: matchPattern(/[0-9A-Za-z]+/)
+                  }}/>
                 <Errors
                   className="text-danger"
                   model=".txn_no"
                   show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    minLength: 'Must be at least 12 characters long.',
+                    matchPattern: 'Invalid transaction ID.'
+                  }}
                 />
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label>Transaction Date</label>
                 {/*<Input type="date" model=".date" name="date" className="form-control" />*/}
-                <Control.text model=".date" name="date" className="form-control" />
+                <Control.text model=".date" name="date" className="form-control"
+                validators={{
+                  required, isPast: isPast(), matchPattern: matchPattern(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)
+                }}/>
                 <Errors
                   className="text-danger"
                   model=".date"
                   show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    isPast: 'Recording future transactions not allowed.',
+                    matchPattern: 'Invalid date.'
+                  }}
                 />
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="vendor">Vendor</label>
-                <Control.text model=".vendor" name="vendor" className="form-control" />
+                <Control.text model=".vendor" name="vendor" className="form-control"
+                validators={{
+                  required
+                }}/>
                 <Errors
                   className="text-danger"
                   model=".vendor"
                   show="touched"
+                  messages={{
+                    required: 'Required. '
+                  }}
                 />
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="gst_no">GST No.</label>
-                <Control.text model=".gst_no" name="gst_no" className="form-control" />
+                <Control.text model=".gst_no" name="gst_no" className="form-control"
+                validators={{
+                  required, isLength: isLength(15), matchPattern: matchPattern(/[0-9][0-9][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9]Z[0-9A-Z]/)
+                }}/>
                 <Errors
                   className="text-danger"
                   model=".gst_no"
                   show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    isLength: 'Must be 15 characters long.',
+                    matchPattern: 'Invalid GST No.'
+                  }}
                 />
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="amount">Transaction Amount (-ve for expenditure)</label>
-                <Control.text model=".amount" name="amount" className="form-control" />
+                <Control.text model=".amount" name="amount" className="form-control"
+                validators={{
+                  required, matchPattern: matchPattern(/^-?[0-9]\d*(\.\d{1,2})?$/)
+                }}/>
                 <Errors
                   className="text-danger"
                   model=".amount"
                   show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    matchPattern: 'Invalid amount.'
+                  }}
                 />
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="memo">Brief memo of transaction</label>
-                <Control.textarea model=".memo" name="memo" className="form-control" />
+                <Control.textarea model=".memo" name="memo" className="form-control"
+                validators={{
+                  required, isLength: maxLength(200)
+                }}/>
                 <Errors
                   className="text-danger"
                   model=".memo"
                   show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    maxLength: 'Must be less than 200 characters long.'
+                  }}
                 />
               </Row>
               <Button className="btn btn-success row-btns" type="submit">Save</Button>
