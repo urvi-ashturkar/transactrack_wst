@@ -13,6 +13,8 @@ import {
     Row, Col,
     Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
 import "../App.css";
 
 const Dashboard = () => {
@@ -120,49 +122,55 @@ console.log(user_details);
   console.log(transactions);
   const transactions_list = transactions.map((txn) => (
     <React.Fragment key={txn.transaction_id}>
-      <article className="media content-section">
-        <div className="media-body">
-          <div className="article-metadata">
-            <h3 className="article-title">
-              <b>{txn.vendor}</b>
-              {txn.amount > 0
-                ?
-              <span className="badge badge-pill badge-warning ml-3">+{txn.amount}</span>
-                :
-              <span className="badge badge-pill badge-warning ml-3">{txn.amount}</span>
-              }
-            </h3>
-            <h5 className="ml-auto"><b>TXN# {txn.transaction_id} &nbsp; | &nbsp; GST# {txn.gst_no}</b></h5>
-            <p className="article-content txn-memo">{txn.memo}</p>
-          </div>
-          <Row className="txn-pills">
-            <Col sm={3}>
-              <span className="badge badge-pill badge-lt-blue">{String(txn.transaction_date).slice(0,10)}</span>
-            </Col>
-            {txn.first_name
-              ?
-              <Col sm={4}>
-                <span className="badge badge-pill badge-lt-blue">{txn.first_name + ' ' + txn.last_name}</span>
-              </Col>
-              :
-              null
-            }
-            {txn.portfolio && txn.portfolio !== ""
-              ?
-              <Col sm={4}>
-                <span className="badge badge-pill badge-lt-blue">{txn.portfolio}</span>
-              </Col>
-              : txn.position === "Secretary"
-                ?
-                <Col sm={4}>
-                  <span className="badge badge-pill badge-lt-blue">Secretary</span>
+      <Accordion defaultActiveKey="0">
+        <Card>
+            <Accordion.Toggle as={Card.Header} eventKey={txn.transaction_id}>
+              <Row>
+                <Col sm={8}><b>{txn.vendor}</b></Col>
+                <Col>
+                  {txn.amount > 0
+                    ?
+                  <span className="badge badge-pill badge-warning ml-3">+{txn.amount}</span>
+                    :
+                  <span className="badge badge-pill badge-warning ml-3">{txn.amount}</span>
+                  }
                 </Col>
-                :
-                null
-            }
-          </Row>
-        </div>
-      </article>
+              </Row>
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey={txn.transaction_id}>
+              <Card.Body>
+                <h5 className="ml-auto"><b>TXN# {txn.transaction_id} &nbsp; | &nbsp; GST# {txn.gst_no}</b></h5>
+                <p className="txn-memo">{txn.memo}</p>
+                <Row className="txn-pills">
+                  <Col sm={3}>
+                    <span className="badge badge-pill badge-lt-blue">{String(txn.transaction_date).slice(0,10)}</span>
+                  </Col>
+                  {txn.first_name
+                    ?
+                    <Col sm={4}>
+                      <span className="badge badge-pill badge-lt-blue">{txn.first_name + ' ' + txn.last_name}</span>
+                    </Col>
+                    :
+                    null
+                  }
+                  {txn.portfolio && txn.portfolio !== ""
+                    ?
+                    <Col sm={4}>
+                      <span className="badge badge-pill badge-lt-blue">{txn.portfolio}</span>
+                    </Col>
+                    : txn.position === "Secretary"
+                      ?
+                      <Col sm={4}>
+                        <span className="badge badge-pill badge-lt-blue">Secretary</span>
+                      </Col>
+                      :
+                      null
+                  }
+                </Row>
+              </Card.Body>
+            </Accordion.Collapse>
+        </Card>
+      </Accordion>
     </React.Fragment>
   ))
 

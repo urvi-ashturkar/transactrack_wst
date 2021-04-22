@@ -9,6 +9,7 @@
     "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
     "react": "^16.0.0",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^16.0.0",
     "react-redux-form": "^1.16.14",
     "react-router-dom": "^5.2.0",
