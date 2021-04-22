@@ -20,28 +20,42 @@ const Dashboard = () => {
   const user_details = reactLocalStorage.getObject("user_details");
   const history = useHistory();
   const [modal_open, setModalOpen] = useState(false);
-
+  const [isLoading, setLoading] = useState(true);
+  const [transactions, setTransactions] = useState();
   //Mugdha : axios.get needed to get the list of all transactions.
   //response.data gives the entire array of all transactions. Loop through it to display
-
-  console.log(user_details);
+console.log(user_details);
   const mis_param = user_details.mis;
   const pos = user_details.position;
   const portf = user_details.portfolio;
-  axios.get('/dashboard', {
-    params: {
-      mis: mis_param,
-      position: pos,
-      portfolio: portf,
-    }
-  })
-  .then(function (response) {
-    console.log("axios success in dashboard ", response.data);
-    reactLocalStorage.setObject("transactions", response.data);
-  })
-  .catch((err) => {
-    console.log("axios fail in dashboard ", err);
-  });
+  useEffect(() => {
+    axios.get('/dashboard', {
+      params: {
+        mis: mis_param,
+        position: pos,
+        portfolio: portf,
+      }
+    })
+    .then(function (response) {
+      console.log("axios success in dashboard ", response.data);
+      reactLocalStorage.setObject("transactions", response.data);
+      setTransactions(response.data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.log("axios fail in dashboard ", err);
+    });
+  }, []);
+
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
+
+  //console.log(user_details);
+  // const mis_param = user_details.mis;
+  // const pos = user_details.position;
+  // const portf = user_details.portfolio;
+  
   console.log("after axios\n");
 
 
@@ -90,7 +104,7 @@ const Dashboard = () => {
     setModalOpen(false);
   }
 
-  const transactions = reactLocalStorage.getObject("transactions");
+  //const transactions = reactLocalStorage.getObject("transactions");
   console.log(transactions);
   const transactions_list = transactions.map((txn) => (
     <React.Fragment key={txn.transaction_id}>
