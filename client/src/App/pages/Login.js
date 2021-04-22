@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import cover from "../cover.jpg";
+import cover from "../login_cover.jpg";
 import { validateFields } from "../Validation";
 import classnames from "classnames";
 import axios from "axios";
@@ -137,7 +137,7 @@ const Login = () => {
       <main role="main" class="container">
         <div className="row" id="login-content">
           <div className="col-12 col-md-8">
-            <img src={cover} id="cover" alt="team" width="100%" />
+            <img src={cover} id="cover" alt="graphic" width="100%" />
           </div>
 
           <div className="content-section col-12 col-md-4">

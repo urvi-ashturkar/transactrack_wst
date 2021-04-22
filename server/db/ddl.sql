@@ -3,10 +3,8 @@ use transactionDB;
 
 create table if not exists team_member(
   mis char(9),
-	first_name varchar(20) not null,
+  first_name varchar(20) not null,
   last_name varchar(20) not null,
-	email varchar(60) not null,
-	phone char(10) not null,
   position varchar(15) not null,
   password varchar(60) NOT NULL,
   portfolio varchar(60),

@@ -113,13 +113,27 @@ const Dashboard = () => {
             <Col sm={3}>
               <span className="badge badge-pill badge-lt-blue">{String(txn.transaction_date).slice(0,10)}</span>
             </Col>
-            {/* "secretary" if secy, else portfolio name */}
-            <Col sm={4}>
-              <span className="badge badge-pill badge-lt-blue">Portfolio</span>
-            </Col>
-            <Col sm={5}>
-              <span className="badge badge-pill badge-lt-blue">Name</span>
-            </Col>
+            {txn.first_name
+              ?
+              <Col sm={4}>
+                <span className="badge badge-pill badge-lt-blue">{txn.first_name + ' ' + txn.last_name}</span>
+              </Col>
+              :
+              null
+            }
+            {txn.portfolio && txn.portfolio !== ""
+              ?
+              <Col sm={4}>
+                <span className="badge badge-pill badge-lt-blue">{txn.portfolio}</span>
+              </Col>
+              : txn.position === "Secretary"
+                ?
+                <Col sm={4}>
+                  <span className="badge badge-pill badge-lt-blue">Secretary</span>
+                </Col>
+                :
+                null
+            }
           </Row>
         </div>
       </article>
@@ -157,7 +171,7 @@ const Dashboard = () => {
         <h2>My transactions</h2>
         }
         <br/>
-        <Button className="btn btn-warning btn-lg" onClick={toggle}>Record New</Button>
+        <Button className="btn btn-warning btn-lg shadow-sm" onClick={toggle}>Record New</Button>
         <br/><br/>
         <Row>
           <Col sm={10}>

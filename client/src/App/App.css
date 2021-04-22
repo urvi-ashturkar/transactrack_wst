@@ -11,19 +11,19 @@ h1, h2, h3, h4, h5, h6 {
   color: #444444;
 }
 
-#form-wrapper {
+/* #form-wrapper {
   background-image: url("./background.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: auto;
-}
+} */
 
-#form-card {
+/* #form-card {
   margin-top: 2rem;
   margin-bottom: 2rem;
-}
+} */
 
-#login-content, .toplookout {
+#login-content, #reg-content, .toplookout {
   margin-top: 5rem;
 }
 
@@ -70,8 +70,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .txn-pills {
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
 .badge-lt-blue {
