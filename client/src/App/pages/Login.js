@@ -116,8 +116,13 @@ const Login = () => {
         const thisUser = res.data[0];
         {/*setUserDetails({...user_details, thisUser});*/}
         // con
-       reactLocalStorage.setObject("user_details", thisUser);
-        history.push("/dashboard");
+        if(res.data[0].message === "Authentication Successful.\n") {
+          reactLocalStorage.setObject("user_details", thisUser);
+          history.push("/dashboard");
+        }
+        else {
+          alert(res.data[0].message);
+        }
       })
       .catch((err) => {
         console.log("fail" + err);

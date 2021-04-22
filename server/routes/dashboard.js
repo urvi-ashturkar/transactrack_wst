@@ -11,6 +11,7 @@ Router.get("/", (req, res) => {
   console.log("3 ", req.query.mis);
   q =
     `select * from transactions where team_member_id = ${req.query.mis};`;
+  console.log("query : ", q);
   con.query(q, (err, result, fields) => {
     if (!err) {
       let string = JSON.stringify(result);
@@ -22,7 +23,7 @@ Router.get("/", (req, res) => {
     } else{
       console.log(err);
       res.send([{ message: `Some issue: ${err}\nTry again.`}]);
-    } 
+    }
   });
 });
 
