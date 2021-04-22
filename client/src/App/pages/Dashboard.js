@@ -26,9 +26,13 @@ const Dashboard = () => {
 
   console.log(user_details);
   const mis_param = user_details.mis;
+  const pos = user_details.position;
+  const portf = user_details.portfolio;
   axios.get('/dashboard', {
     params: {
       mis: mis_param,
+      position: pos,
+      portfolio: portf,
     }
   })
   .then(function (response) {
