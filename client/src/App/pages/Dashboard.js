@@ -32,11 +32,13 @@ const Dashboard = () => {
   const minLength = (len) => (val) => (val) && (val.length >= len);
   const isLength = (len) => (val) => (val) && (val.length === len);
   const matchPattern = (re) => (val) => re.test(val);
-  const isPast = (val) => {
-    var today = new Date().getTime();
-    val = new Date(val).getTime();
-    return (today - val) >= 0;
-  }
+  const isPast = (val) =>
+  new Date(val) <= new Date()
+  //const isPast = (val) => (val) && (new Date().getTime() >= new Date(val).getTime());
+  //  // var today = new Date().getTime();
+  //  // val = new Date(val).getTime();
+  //   return () >= 0;
+  // }
 
 console.log(user_details);
   const mis_param = user_details.mis;
@@ -106,7 +108,7 @@ console.log(user_details);
         console.log("axios success in login", res.data[0]);
         const thisTxn = res.data[0];
         reactLocalStorage.setObject("transactions", thisTxn);*/}
-        const user_details = reactLocalStorage.getObject("user_details");
+        //const user_details = reactLocalStorage.getObject("user_details");
         console.log("In 2nd axios: ");
         console.log(user_details);
         reactLocalStorage.setObject("user_details", user_details);
@@ -118,6 +120,41 @@ console.log(user_details);
     setModalOpen(false);
   }
 
+  function handleDelete(e, transac_id) {
+    console.log("e is ", e);
+    console.log("transac id is ", transac_id);
+    const txn_dlt = {
+      txn_id: transac_id,
+    }
+    //console.log(txn_dlt);
+    axios
+      .post("http://localhost:5000/dashboard/delete", txn_dlt)
+      .then((res) => {
+        console.log("In 2nd axios: res is ", res);
+        axios.get('/dashboard', {
+          params: {
+            mis: mis_param,
+            position: pos,
+            portfolio: portf,
+          }
+        })
+        .then(function (response) {
+          console.log("axios success in dashboard ", response.data);
+          reactLocalStorage.setObject("transactions", response.data);
+          setTransactions(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log("axios fail in dashboard ", err);
+        });
+        
+       //setTransactions(res.data);
+      })
+      .catch((err) => {
+        console.log("fail" + err);
+      });
+    setModalOpen(false);
+  }
   // const transactions = reactLocalStorage.getObject("transactions");
   console.log(transactions);
   const transactions_list = transactions.map((txn) => (
@@ -151,7 +188,7 @@ console.log(user_details);
                       <span className="badge badge-pill badge-lt-blue">{txn.first_name + ' ' + txn.last_name}</span>
                     </Col>
                     :
-                    null
+                   null
                   }
                   {txn.portfolio && txn.portfolio !== ""
                     ?
@@ -164,7 +201,10 @@ console.log(user_details);
                         <span className="badge badge-pill badge-lt-blue">Secretary</span>
                       </Col>
                       :
-                      null
+                      <Button sm={4}  color="danger" onClick={(e) => handleDelete(e, txn.transaction_id)}>
+                      {/* <Button sm={4} color="danger">  */}
+                      Delete Transaction
+                     </Button>
                   }
                 </Row>
               </Card.Body>

@@ -20,7 +20,7 @@ create table if not exists transactions(
   gst_no char(15),
   vendor varchar(50),
   team_member_id char(9),
-  memo varchar(200),
+  memo varchar(200) NOT NULL,
   primary key (transaction_id),
   foreign key (team_member_id) references team_member(mis) on delete set null
 );
