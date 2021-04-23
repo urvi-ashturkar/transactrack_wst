@@ -34,8 +34,9 @@ const Dashboard = () => {
   const matchPattern = (re) => (val) => re.test(val);
   const isPast = (val) => {
     var today = new Date().getTime();
-    val = new Date(val).getTime();
-    return (today - val) >= 0;
+    var ip = new Date(val).getTime();
+    console.log(new Date(), today, val, ip);
+    return (today - ip) >= 0;
   }
 
 console.log(user_details);
@@ -226,7 +227,7 @@ console.log(user_details);
                 <label htmlFor="txn_no">Transaction Reference ID</label>
                 <Control.text model=".txn_no" name="txn_no" className="form-control"
                   validators={{
-                    required, minLength: minLength(3), matchPattern: matchPattern(/[0-9A-Za-z]+/)
+                    required, minLength: minLength(12), matchPattern: matchPattern(/[0-9A-Za-z]+/)
                   }}/>
                 <Errors
                   className="text-danger"
@@ -234,17 +235,17 @@ console.log(user_details);
                   show="touched"
                   messages={{
                     required: 'Required. ',
-                    minLength: 'Must be at least 12 characters long.',
-                    matchPattern: 'Invalid transaction ID.'
+                    minLength: 'Must be at least 12 characters long. ',
+                    matchPattern: 'Invalid transaction ID. '
                   }}
                 />
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label>Transaction Date</label>
                 {/*<Input type="date" model=".date" name="date" className="form-control" />*/}
-                <Control.text model=".date" name="date" className="form-control"
+                <Control.text model=".date" name="date" placeholder="YYYY-MM-DD" className="form-control"
                 validators={{
-                  required, isPast: isPast(), matchPattern: matchPattern(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)
+                  required, isPast, matchPattern: matchPattern(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)
                 }}/>
                 <Errors
                   className="text-danger"
@@ -252,8 +253,8 @@ console.log(user_details);
                   show="touched"
                   messages={{
                     required: 'Required. ',
-                    isPast: 'Recording future transactions not allowed.',
-                    matchPattern: 'Invalid date.'
+                    isPast: 'Recording future transactions not allowed. ',
+                    matchPattern: 'Invalid date. '
                   }}
                 />
               </Row>
@@ -284,8 +285,8 @@ console.log(user_details);
                   show="touched"
                   messages={{
                     required: 'Required. ',
-                    isLength: 'Must be 15 characters long.',
-                    matchPattern: 'Invalid GST No.'
+                    isLength: 'Must be 15 characters long. ',
+                    matchPattern: 'Invalid GST No. '
                   }}
                 />
               </Row>
@@ -301,7 +302,7 @@ console.log(user_details);
                   show="touched"
                   messages={{
                     required: 'Required. ',
-                    matchPattern: 'Invalid amount.'
+                    matchPattern: 'Invalid amount. '
                   }}
                 />
               </Row>
@@ -317,7 +318,7 @@ console.log(user_details);
                   show="touched"
                   messages={{
                     required: 'Required. ',
-                    maxLength: 'Must be less than 200 characters long.'
+                    maxLength: 'Must be less than 200 characters long. '
                   }}
                 />
               </Row>
