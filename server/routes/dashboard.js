@@ -40,6 +40,25 @@ Router.get("/", (req, res) => {
 });
 
 
+Router.post("/delete", (req, res) => {
+  console.log("req is dlt : ", req);
+  console.log("req.body.mis: ", req.body.txn_id);
+  query = `DELETE FROM transactions WHERE transaction_id = "${req.body.txn_id}"`;
+  con.query(query, (err, result) => {
+    if(!err){
+      let string = JSON.stringify(result);
+      console.log(">> string: ", string);
+      let json = JSON.parse(string);
+      console.log(">> json: ", json);
+      res.status(200).send(json);
+      //res.status(200).send([{message: "Deletion Successful.\n"}]);
+    }
+    else{
+      res.status(400).send(err.message);
+    }
+  });
+});
+
 Router.post("/", (req, res) => {
   //console.log(req);
   console.log("req.body.mis: ", req.body.mis);
@@ -57,7 +76,6 @@ Router.post("/", (req, res) => {
     }
   });
 });
-
 
 module.exports = Router;
 

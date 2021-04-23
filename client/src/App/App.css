@@ -79,7 +79,7 @@ h1, h2, h3, h4, h5, h6 {
 .badge-lt-blue {
   background-color: #a8dadc;
   font-size: 20px;
-  font-weight: lighter;
+  font-weight: normal;
 }
 
 .article-title {

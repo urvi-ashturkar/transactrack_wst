@@ -3,7 +3,7 @@ import { validateFields } from "../Validation";
 import classnames from "classnames";
 import axios from "axios";
 import {reactLocalStorage} from 'reactjs-localstorage';
-import {Redirect, useHistory} from "react-router-dom";
+import {Redirect, useHistory, Prompt} from "react-router-dom";
 import { Label, Control, LocalForm, Errors } from 'react-redux-form';
 import {
     Button,
@@ -107,7 +107,7 @@ console.log(user_details);
         console.log("axios success in login", res.data[0]);
         const thisTxn = res.data[0];
         reactLocalStorage.setObject("transactions", thisTxn);*/}
-        const user_details = reactLocalStorage.getObject("user_details");
+        //const user_details = reactLocalStorage.getObject("user_details");
         console.log("In 2nd axios: ");
         console.log(user_details);
         reactLocalStorage.setObject("user_details", user_details);
@@ -119,6 +119,49 @@ console.log(user_details);
     setModalOpen(false);
   }
 
+  function handleDelete(e, transac_id) {
+    console.log("e is ", e);
+    console.log("transac id is ", transac_id);
+
+    var confirmation = window.confirm("Are you sure you want to delete this record?\nThis action cannot be undone.");
+
+    if(confirmation) {
+      const txn_dlt = {
+        txn_id: transac_id,
+      }
+      //console.log(txn_dlt);
+      axios
+        .post("http://localhost:5000/dashboard/delete", txn_dlt)
+        .then((res) => {
+          console.log("In 2nd axios: res is ", res);
+          axios.get('/dashboard', {
+            params: {
+              mis: mis_param,
+              position: pos,
+              portfolio: portf,
+            }
+          })
+          .then(function (response) {
+            console.log("axios success in dashboard ", response.data);
+            reactLocalStorage.setObject("transactions", response.data);
+            setTransactions(response.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log("axios fail in dashboard ", err);
+          });
+
+         //setTransactions(res.data);
+        })
+        .catch((err) => {
+          console.log("fail" + err);
+        });
+    }
+    else {
+      ;
+    }
+
+  }
   // const transactions = reactLocalStorage.getObject("transactions");
   console.log(transactions);
   const transactions_list = transactions.map((txn) => (
@@ -136,6 +179,15 @@ console.log(user_details);
                   <span className="badge badge-pill badge-warning ml-3">{txn.amount}</span>
                   }
                 </Col>
+                {!txn.mis || txn.mis === reactLocalStorage.getObject("user_details").mis
+                  ?
+                  <Col>
+                    <i className="bi bi-trash" onClick={(e) => handleDelete(e, txn.transaction_id)}></i>
+                  </Col>
+                  :
+                  console.log(txn.mis, reactLocalStorage.getObject("user_details").mis)
+                }
+
               </Row>
             </Accordion.Toggle>
             <Accordion.Collapse eventKey={txn.transaction_id}>
@@ -152,7 +204,7 @@ console.log(user_details);
                       <span className="badge badge-pill badge-lt-blue">{txn.first_name + ' ' + txn.last_name}</span>
                     </Col>
                     :
-                    null
+                   null
                   }
                   {txn.portfolio && txn.portfolio !== ""
                     ?
@@ -166,6 +218,7 @@ console.log(user_details);
                       </Col>
                       :
                       null
+
                   }
                 </Row>
               </Card.Body>
