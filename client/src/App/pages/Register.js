@@ -134,15 +134,21 @@ class Register extends Component {
       // no errors. Submit the form
 
       this.setState({ ...initialState, allFieldsValidated: true });
-      console.log("success");
       axios
         .post("http://localhost:5000/register", this.state)
         .then((res) => {
-          console.log("axios success" + res);
-          this.setRedirect();
+          if(res.status == 400){
+            alert("MIS already exists.\n");
+          }
+          // console.log("axios success" + res);
+          else{
+            this.setRedirect();
+          }
+          
         })
         .catch((err) => {
           console.log("fail" + err);
+          alert("MIS already exists.\n");
         });
     } else {
       // update the state with errors

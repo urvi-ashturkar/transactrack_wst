@@ -7,91 +7,6 @@ import {reactLocalStorage} from 'reactjs-localstorage';
 import Dashboard from "./Dashboard";
 import {Redirect, useHistory} from "react-router-dom";
 import "../App.css";
-{/*import { useState, useEffect } from "react";*/}
-
-{/*
-const cred_state = {
-  mis: {
-    value: "",
-    validateOnChange: false,
-    error: "",
-  },
-  password: {
-    value: "",
-    validateOnChange: false,
-    error: "",
-  },
-  submitCalled: false,
-  allFieldsValidated: false,
-};
-
-
-handleNotFocus(validationFunc, evt) {
-  const field = evt.target.name;
-
-  if (
-    cred_state[field]["validateOnChange"] === false &&
-    cred_state.submitCalled === false
-  ) {
-    this.setState((state) => ({
-      [field]: {
-        ...state[field],
-        validateOnChange: true,
-        error: validationFunc(state[field].value),
-      },
-    }));
-  }
-  return;
-}
-
-handleChange(validationFunc, evt) {
-  const field = evt.target.name;
-  const fieldVal = evt.target.value;
-  this.setState((state) => ({
-    [field]: {
-      ...state[field],
-      value: fieldVal,
-      error: state[field]["validateOnChange"] ? validationFunc(fieldVal) : "",
-    },
-  }));
-}
-
-handleSubmit(evt) {
-  evt.preventDefault();
-  // validate all fields
-  const { mis, password } = cred_state;
-  const misError = validateFields.validateMis(mis.value);
-  const passwordError = validateFields.validatePassword(password.value);
-  if ([misError, passwordError].every((e) => e === false)) {
-    // no errors. Submit the form
-    console.log("success");
-    this.setState({ ...initialState, allFieldsValidated: true });
-    axios
-      .post("http://localhost:5000/login", cred_state)
-      .then((res) => {
-        console.log("axios success", res.data[0]);
-      })
-      .catch((err) => {
-        console.log("fail" + err);
-      });
-
-  } else {
-    // update the state with errors
-    this.setState((state) => ({
-      mis: {
-        ...state.mis,
-        validateOnChange: true,
-        error: misError,
-      },
-      password: {
-        ...state.password,
-        validateOnChange: true,
-        error: passwordError,
-      },
-    }));
-  }
-}
-*/}
 
 const Login = () => {
 
@@ -109,10 +24,6 @@ const Login = () => {
     axios
       .post("http://localhost:5000/login", creds)
       .then((res) => {
-        console.log("res:", res)
-        console.log("res.data:", res.data)
-        console.log("res.data[0]:", res.data[0])
-        console.log("axios success in login", res.data[0]);
         const thisUser = res.data[0];
         {/*setUserDetails({...user_details, thisUser});*/}
         // con

@@ -5,9 +5,6 @@ const con = require("../connection");
 
 //Router to GET specific learner detail from the MySQL database
 Router.get("/", (req, res) => {
-
-  console.log("3 ", req.query.mis);
-  console.log("4 ", req.query.position);
   if(req.query.position === "Secretary"){
     q =
     `select distinct mis, first_name, last_name, position, portfolio, transaction_id, transaction_date, amount, gst_no, vendor, memo from team_member INNER JOIN transactions ON team_member.mis = transactions.team_member_id;`;
@@ -23,14 +20,10 @@ Router.get("/", (req, res) => {
     }
 
   }
-  console.log("query : ", q);
   con.query(q, (err, result, fields) => {
     if (!err) {
       let string = JSON.stringify(result);
-      console.log(">> string: ", string);
       let json = JSON.parse(string);
-      console.log(">> json: ", json);
-      // console.log(rows);
       res.status(200).send(json);
     } else{
       console.log(err);
@@ -41,17 +34,12 @@ Router.get("/", (req, res) => {
 
 
 Router.post("/delete", (req, res) => {
-  console.log("req is dlt : ", req);
-  console.log("req.body.mis: ", req.body.txn_id);
   query = `DELETE FROM transactions WHERE transaction_id = "${req.body.txn_id}"`;
   con.query(query, (err, result) => {
     if(!err){
       let string = JSON.stringify(result);
-      console.log(">> string: ", string);
       let json = JSON.parse(string);
-      console.log(">> json: ", json);
       res.status(200).send(json);
-      //res.status(200).send([{message: "Deletion Successful.\n"}]);
     }
     else{
       res.status(400).send(err.message);
@@ -60,15 +48,11 @@ Router.post("/delete", (req, res) => {
 });
 
 Router.post("/", (req, res) => {
-  //console.log(req);
-  console.log("req.body.mis: ", req.body.mis);
   query = `INSERT into transactions values("${req.body.txn_id}", "${req.body.date}", ${req.body.amount}, "${req.body.gst}", "${req.body.vendor}", ${req.body.mis}, "${req.body.memo}");`;
   con.query(query, (err, result) => {
     if(!err){
       let string = JSON.stringify(result);
-      console.log(">> string: ", string);
       let json = JSON.parse(string);
-      console.log(">> json: ", json);
       res.status(200).send(json);
     }
     else{
@@ -78,14 +62,3 @@ Router.post("/", (req, res) => {
 });
 
 module.exports = Router;
-
-// Router.post("/delegate", (req, res) => {
-//   q = "";
-//   m = 0;
-//   con.query(q, m, (err, rows, fields) => {
-//     if (!err) {
-//       console.log(rows);
-//       res.send(rows);
-//     } else console.log(err);
-//   });
-// });

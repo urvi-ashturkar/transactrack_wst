@@ -35,7 +35,7 @@ const Dashboard = () => {
   const isPast = (val) => {
     var today = new Date().getTime();
     var ip = new Date(val).getTime();
-    console.log(new Date(), today, val, ip);
+    // console.log(new Date(), today, val, ip);
     return (today - ip) >= 0;
   }
 
@@ -52,7 +52,6 @@ console.log(user_details);
       }
     })
     .then(function (response) {
-      console.log("axios success in dashboard ", response.data);
       reactLocalStorage.setObject("transactions", response.data);
       setTransactions(response.data);
       setLoading(false);
@@ -65,14 +64,6 @@ console.log(user_details);
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }
-
-  //console.log(user_details);
-  // const mis_param = user_details.mis;
-  // const pos = user_details.position;
-  // const portf = user_details.portfolio;
-
-  console.log("after axios\n");
-
 
   function logout() {
     reactLocalStorage.clear();
@@ -93,22 +84,10 @@ console.log(user_details);
       memo: e.memo,
       mis: user_details.mis,
     }
-    {/*
-    console.log(e);
-    console.log(txn_info.mis, txn_info.date);
-    Mugdha :
-    */}
+
     axios
       .post("http://localhost:5000/dashboard", txn_info)
       .then((res) => {
-        {/*console.log("res:", res)
-        console.log("res.data:", res.data)
-        console.log("res.data[0]:", res.data[0])
-        console.log("axios success in login", res.data[0]);
-        const thisTxn = res.data[0];
-        reactLocalStorage.setObject("transactions", thisTxn);*/}
-        //const user_details = reactLocalStorage.getObject("user_details");
-        console.log("In 2nd axios: ");
         console.log(user_details);
         reactLocalStorage.setObject("user_details", user_details);
         history.push("/dashboard");
@@ -120,20 +99,15 @@ console.log(user_details);
   }
 
   function handleDelete(e, transac_id) {
-    console.log("e is ", e);
-    console.log("transac id is ", transac_id);
-
     var confirmation = window.confirm("Are you sure you want to delete this record?\nThis action cannot be undone.");
 
     if(confirmation) {
       const txn_dlt = {
         txn_id: transac_id,
       }
-      //console.log(txn_dlt);
       axios
         .post("http://localhost:5000/dashboard/delete", txn_dlt)
         .then((res) => {
-          console.log("In 2nd axios: res is ", res);
           axios.get('/dashboard', {
             params: {
               mis: mis_param,
@@ -142,7 +116,6 @@ console.log(user_details);
             }
           })
           .then(function (response) {
-            console.log("axios success in dashboard ", response.data);
             reactLocalStorage.setObject("transactions", response.data);
             setTransactions(response.data);
             setLoading(false);
@@ -162,8 +135,7 @@ console.log(user_details);
     }
 
   }
-  // const transactions = reactLocalStorage.getObject("transactions");
-  console.log(transactions);
+
   const transactions_list = transactions.map((txn) => (
     <React.Fragment key={txn.transaction_id}>
       <Accordion defaultActiveKey="0">

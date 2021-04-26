@@ -3,8 +3,6 @@ const Router = express.Router();
 const con = require("../connection");
 const bcrypt = require("bcryptjs");
 Router.post("/", (req, res) => {
-  //console.log(req);
-  console.log("req.body.mis: ", req.body.mis);
   query = `SELECT mis, password, first_name, last_name, position, portfolio FROM team_member WHERE mis = ${req.body.mis}`;
   con.query(query, (err, result) => {
     if (err) {
@@ -12,28 +10,18 @@ Router.post("/", (req, res) => {
     }
     if (result.length > 0) {
       let string = JSON.stringify(result);
-      console.log(">> string: ", string);
       let json = JSON.parse(string);
-      console.log(">> json: ", json);
-      console.log(`req pass: ${req.body.password} is of the type ${ typeof req.body.password}`);
-      console.log(`json pass: ${json[0].password} is of the type ${ typeof json[0].password}`);
       bcrypt.compare(
         req.body.password,
         json[0].password,
         (error, response) => {
           if (response) {
-            //req.session.user = result;
-            //console.log(`After login ${req.session.user}`)
-            console.log("json - ", json);
             json[0].message = "Authentication Successful.\n"
             res.send(json);
           } else {
             res.send([{
               message: "Incorrect username or password.\nTry again.",
             }]);
-            console.log("req pass: ", req.body.password);
-            console.log("json: ", json[0].password);
-            console.log("json - ", json);
           }
         }
       );
@@ -42,19 +30,5 @@ Router.post("/", (req, res) => {
     }
   });
 });
-
-// //Router to GET specific learner detail from the MySQL database
-// Router.get("/:id", (req, res) => {
-//   con.query(
-//     "SELECT * FROM portfolio WHERE portfolio_id = ?",
-//     req.params.id.slice(1),
-//     (err, rows, fields) => {
-//       if (!err) {
-//         res.send(rows);
-//         console.log(req.params.id.slice(1));
-//       } else console.log(err);
-//     }
-//   );
-// });
 
 module.exports = Router;
