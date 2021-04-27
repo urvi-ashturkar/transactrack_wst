@@ -91,6 +91,7 @@ console.log(user_details);
       })
       .catch((err) => {
         console.log("fail" + err);
+        alert("A transaction already exists with this Transaction ID.\n");
       });
     setModalOpen(false);
   }
