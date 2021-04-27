@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import {Redirect, useHistory} from "react-router-dom";
-import {Row, Col} from "reactstrap";
+import {Redirect} from "react-router-dom";
 import { validateFields } from "../Validation";
 import classnames from "classnames";
 import axios from "axios";
-import Login from "./Login";
 import cover from "../reg_cover.jpg";
 
 const initialState = {
@@ -137,18 +135,20 @@ class Register extends Component {
       axios
         .post("http://localhost:5000/register", this.state)
         .then((res) => {
-          if(res.status == 400){
-            alert("MIS already exists.\n");
+          console.log("1",res.status);
+          if(res.status === 400){
+            console.log("fail 1");
+            alert("An account already exists with this MIS ID.\n");
           }
           // console.log("axios success" + res);
           else{
             this.setRedirect();
           }
-          
+
         })
         .catch((err) => {
-          console.log("fail" + err);
-          alert("MIS already exists.\n");
+          console.log("fail2" + err);
+          alert("An account already exists with this MIS ID.\n");
         });
     } else {
       // update the state with errors
@@ -207,7 +207,7 @@ class Register extends Component {
     return (
       <div className="App">
         {this.renderRedirect()}
-        <main role="main" class="container">
+        <main role="main" className="container">
           <div className="row" id="reg-content">
             <div className="col-12 col-md-6">
               <img src={cover} id="cover" alt="graphic" width="100%" />
@@ -235,7 +235,7 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validateMis, evt)
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(validateFields.validateMis, evt)
                           }
                         />
@@ -259,7 +259,7 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validateFirstName, evt)
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(
                               validateFields.validateFirstName,
                               evt
@@ -284,7 +284,7 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validateLastName, evt)
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(
                               validateFields.validateLastName,
                               evt
@@ -309,7 +309,7 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validatePosition, evt)
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(
                               validateFields.validatePosition,
                               evt
@@ -337,7 +337,7 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validatePortfolio, evt)
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(
                               validateFields.validatePortfolio,
                               evt
@@ -378,7 +378,7 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validatePassword, evt)
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(
                               validateFields.validatePassword,
                               evt
@@ -406,7 +406,7 @@ class Register extends Component {
                               evt
                             )
                           }
-                          onNotFocus={(evt) =>
+                          onBlur={(evt) =>
                             this.handleNotFocus(
                               validateFields.validateConfirmPassword,
                               evt
@@ -430,10 +430,10 @@ class Register extends Component {
                   </button>
                 </div>
 
-                <div class="border-top pt-3">
-                  <small class="text-muted">
+                <div className="border-top pt-3">
+                  <small className="text-muted">
                     Already Have An Account?{" "}
-                    <a class="ml-2" href="/login">
+                    <a className="ml-2" href="/login">
                       Sign In
                     </a>
                   </small>

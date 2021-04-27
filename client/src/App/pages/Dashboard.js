@@ -1,17 +1,14 @@
-import React, { useState, useEffect, Component } from "react";
-import { validateFields } from "../Validation";
-import classnames from "classnames";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {reactLocalStorage} from 'reactjs-localstorage';
-import {Redirect, useHistory, Prompt} from "react-router-dom";
-import { Label, Control, LocalForm, Errors } from 'react-redux-form';
+import {useHistory} from "react-router-dom";
+import { Control, LocalForm, Errors } from 'react-redux-form';
 import {
     Button,
-    Input,
-    Navbar, NavbarBrand, Nav, NavItem, NavLink,
+    Navbar, NavbarBrand, Nav, NavItem,
     Container,
     Row, Col,
-    Modal, ModalHeader, ModalBody, ModalFooter,
+    Modal, ModalHeader, ModalBody,
 } from 'reactstrap';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';

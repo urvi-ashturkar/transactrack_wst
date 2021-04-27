@@ -1,11 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import cover from "../login_cover.jpg";
-import { validateFields } from "../Validation";
-import classnames from "classnames";
 import axios from "axios";
 import {reactLocalStorage} from 'reactjs-localstorage';
-import Dashboard from "./Dashboard";
-import {Redirect, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import "../App.css";
 
 const Login = () => {
@@ -45,7 +42,7 @@ const Login = () => {
 
   return (
     <div className="App">
-      <main role="main" class="container">
+      <main role="main" className="container">
         <div className="row" id="login-content">
           <div className="col-12 col-md-8">
             <img src={cover} id="cover" alt="graphic" width="100%" />
@@ -54,7 +51,7 @@ const Login = () => {
           <div className="content-section col-12 col-md-4">
             <form onSubmit={handleSubmit}>
               <fieldset className="form-group">
-                <legend className="border-bottom mb-4">Log In</legend>
+                <legend className="border-bottom mb-4">Log In</legend><br/>
                 {/* Mis field */}
                 <div className="form-group">
                   <label>MIS</label><br/>
@@ -85,9 +82,6 @@ const Login = () => {
                   Submit
                 </button>
               </div><br/>
-              <small className="text-muted ml-2">
-                <a href="#">Forgot Password?</a>
-              </small>
             </form>
             <div className="border-top pt-3">
               <small className="text-muted">
