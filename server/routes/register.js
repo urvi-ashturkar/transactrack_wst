@@ -13,8 +13,10 @@ Router.post("/", (req, res) => {
 
   bcrypt.hash(req.body.password.value, saltRounds, (err, hash) => {
     // let query = `insert into team_member (mis, first_name, last_name, position, password, portfolio) select ${req.body.mis.value}, "${req.body.first_name.value}", "${req.body.last_name.value}", "${req.body.position.value}","${hash}", "${req.body.portfolio.value}" where not exists (select mis from team_member where mis = ${req.body.mis.value});`;
-    let query = `insert into team_member (mis, first_name, last_name, position, password, portfolio) values (${req.body.mis.value}, "${req.body.first_name.value}", "${req.body.last_name.value}", "${req.body.position.value}","${hash}", "${req.body.portfolio.value}");)`;
+    let query = `insert into team_member (mis, first_name, last_name, position, password, portfolio) values (${req.body.mis.value}, "${req.body.first_name.value}", "${req.body.last_name.value}", "${req.body.position.value}","${hash}", "${req.body.portfolio.value}");`;
+    console.log(query);
     con.query(query, (err, result) => {
+      console.log(result);
       if (err) {
         res.status(400).send(err.message);
       }
