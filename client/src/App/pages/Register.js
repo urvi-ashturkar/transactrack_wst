@@ -3,6 +3,7 @@ import {Redirect} from "react-router-dom";
 import { validateFields } from "../Validation";
 import classnames from "classnames";
 import axios from "axios";
+import {reactLocalStorage} from 'reactjs-localstorage';
 import cover from "../reg_cover.jpg";
 
 const initialState = {
@@ -135,9 +136,7 @@ class Register extends Component {
       axios
         .post("http://localhost:5000/register", this.state)
         .then((res) => {
-          console.log("1",res.status);
           if(res.status === 400){
-            console.log("fail 1");
             alert("An account already exists with this MIS ID.\n");
           }
           // console.log("axios success" + res);
@@ -147,7 +146,6 @@ class Register extends Component {
 
         })
         .catch((err) => {
-          console.log("fail2" + err);
           alert("An account already exists with this MIS ID.\n");
         });
     } else {
@@ -316,7 +314,7 @@ class Register extends Component {
                             )
                           }
                         >
-                          <option value=" "> </option>
+                          <option value=" " disabled selected> </option>
                           <option value="Coordinator">Coordinator</option>
                           <option value="Portfolio Head">Portfolio Head</option>
                           <option value="Secretary">Secretary</option>
@@ -337,14 +335,14 @@ class Register extends Component {
                           onChange={(evt) =>
                             this.handleChange(validateFields.validatePortfolio, evt)
                           }
-                          onBlur={(evt) =>
-                            this.handleNotFocus(
-                              validateFields.validatePortfolio,
-                              evt
-                            )
-                          }
+                          // onBlur={(evt) =>
+                          //   this.handleNotFocus(
+                          //     validateFields.validatePortfolio,
+                          //     evt
+                          //   )
+                          // }
                         >
-                          <option value=" "> </option>
+                          <option value=" " selected> </option>
                           <option value="Events">Events</option>
                           <option value="Finance">Finance</option>
                           <option value="Design">Design</option>
@@ -406,12 +404,12 @@ class Register extends Component {
                               evt
                             )
                           }
-                          onBlur={(evt) =>
-                            this.handleNotFocus(
-                              validateFields.validateConfirmPassword,
-                              evt
-                            )
-                          }
+                          // onBlur={(evt) =>
+                          //   this.handleNotFocus(
+                          //     validateFields.validateConfirmPassword,
+                          //     evt
+                          //   )
+                          // }
                         />
                         <div className="invalid-feedback">
                           {confirm_password.error}

@@ -1,11 +1,5 @@
 import validator from 'validator';
 
-function isFutureDate(idate){
-  var today = new Date().getTime();
-  idate = new Date(idate).getTime();
-  return (today - idate) < 0;
-}
-
 class ValidateFields {
 
   validateMis(mis) {
@@ -54,75 +48,6 @@ class ValidateFields {
     return false;
   }
 
-  validateEmail(email) {
-
-    if (validator.isEmpty(email)) {
-      return 'Email is required';
-    } else if (!validator.isEmail(email)) {
-      return 'Invalid Email';
-    }
-    return false;
-  }
-
-  validatePhone(phone) {
-    const phoneRegex = new RegExp("[^0-9]+");
-
-    if (validator.isEmpty(phone)) {
-      return 'Phone no. is required';
-    } else if (
-      !validator.isLength(phone, { min: 10 }) ||
-      !validator.isLength(phone, { max: 10 }) ||
-      phoneRegex.test(phone)
-    ){
-      return 'Invalid phone no.';
-    }
-    return false;
-  }
-
-  validateDob(dob) {
-
-    if (validator.isEmpty(dob)) {
-      return 'DOB is required';
-    } else if (
-      isFutureDate(dob) === true
-    ){
-      return 'Invalid DOB';
-    }
-    return false;
-  }
-
-  validateCgpa(cgpa) {
-    const cgpaRegex = new RegExp("[^\d*(\.\d{0,2})?$]");
-
-    if (validator.isEmpty(cgpa)) {
-      return 'CGPA is required';
-    } else if (
-      cgpa < 4.00 ||
-      cgpa > 10.00 ||
-      !cgpaRegex.test(cgpa)
-    ){
-      //also need to check with db
-      return 'Invalid CGPA';
-    }
-    return false;
-  }
-
-  validateIsHostelite(is_hostelite) {
-    return false;
-  }
-
-  validateJoinDate(join_date) {
-
-    if (validator.isEmpty(join_date)) {
-      return 'Join date is required';
-    } else if (
-      isFutureDate(join_date) === true
-    ){
-      return 'Invalid join date';
-    }
-    return false;
-  }
-
   validatePosition(position) {
 
     if (validator.isEmpty(position)) {
@@ -136,7 +61,6 @@ class ValidateFields {
   }
 
   validatePortfolio(portfolio, pos) {
-    console.log(portfolio, pos);
     if (validator.isEmpty(portfolio) &&
       pos !== "Secretary") {
       return 'Portfolio is required';
@@ -160,7 +84,6 @@ class ValidateFields {
   }
 
   validateConfirmPassword(confirm_password, pwd) {
-    console.log(pwd, confirm_password);
     if (validator.isEmpty(confirm_password)) {
       return 'Password confirmation is required';
     } else if (confirm_password !== pwd) {
