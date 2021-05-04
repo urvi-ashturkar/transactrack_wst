@@ -61,4 +61,33 @@ Router.post("/", (req, res) => {
   });
 });
 
+Router.post("/delete", (req, res) => {
+  query = `DELETE FROM transactions WHERE transaction_id = "${req.body.txn_id}"`;
+  con.query(query, (err, result) => {
+    if(!err){
+      let string = JSON.stringify(result);
+      let json = JSON.parse(string);
+      res.status(200).send(json);
+    }
+    else{
+      res.status(400).send(err.message);
+    }
+  });
+});
+
+Router.post("/edit", (req, res) => {
+  query = `UPDATE transactions SET transaction_date = "${req.body.date}", amount = ${req.body.amount}, gst_no = "${req.body.gst}", vendor = "${req.body.vendor}", team_member_id = ${req.body.mis}, memo = "${req.body.memo}") WHERE transaction_id = "${req.body.txn_id}";`;
+  con.query(query, (err, result) => {
+    if(!err){
+      let string = JSON.stringify(result);
+      let json = JSON.parse(string);
+      res.status(200).send(json);
+    }
+    else{
+      res.status(400).send(err.message);
+    }
+  });
+});
+
+
 module.exports = Router;
