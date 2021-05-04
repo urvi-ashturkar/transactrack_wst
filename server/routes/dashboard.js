@@ -76,7 +76,9 @@ Router.post("/delete", (req, res) => {
 });
 
 Router.post("/edit", (req, res) => {
-  query = `UPDATE transactions SET transaction_date = "${req.body.date}", amount = ${req.body.amount}, gst_no = "${req.body.gst}", vendor = "${req.body.vendor}", team_member_id = ${req.body.mis}, memo = "${req.body.memo}") WHERE transaction_id = "${req.body.txn_id}";`;
+  console.log("req.body.txn_id: ", req.body.txn_id);
+  query = `UPDATE transactions SET transaction_date = "${req.body.date}", amount = ${req.body.amount}, gst_no = "${req.body.gst}", vendor = "${req.body.vendor}", team_member_id = ${req.body.mis}, memo = "${req.body.memo}" WHERE transaction_id = "${req.body.txn_id}";`;
+  console.log(query);
   con.query(query, (err, result) => {
     if(!err){
       let string = JSON.stringify(result);
