@@ -3,28 +3,21 @@ body {
   color: #333333;
 }
 
-main {
-  /* margin-top: 5rem; */
-}
-
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
 }
 
-/* #form-wrapper {
-  background-image: url("./background.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: auto;
-} */
-
-/* #form-card {
+.title {
   margin-top: 2rem;
-  margin-bottom: 2rem;
-} */
+  color: #4C3483;
+}
 
-#login-content, #reg-content, .toplookout {
-  margin-top: 5rem;
+.toplookout {
+  margin-top: 6rem;
+}
+
+#login-content, #reg-content {
+  margin-top: 1rem;
 }
 
 .login-input {
@@ -35,13 +28,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 10px;
 }
 
+.btn-blue {
+  background-color: #4C3483;
+  color: white;
+}
+
 .row-btns {
   margin-top: 10px;
   margin-right: 20px;
-}
-
-.bg-steel {
-  background-color: #5f788a;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -82,18 +76,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 
-.article-title {
-  color: #444444;
-  padding-bottom: 1px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid #e3e3e3
-}
-
-a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
-}
-
 .card-header {
   color: #444444;
   font-size: 22px;
@@ -101,43 +83,4 @@ a.article-title:hover {
 
 .card-header :hover {
   cursor: pointer;
-}
-
-.article-content {
-  white-space: pre-line;
-  margin-top: 10px;
-}
-
-.article-img {
-  height: 65px;
-  width: 65px;
-  margin-right: 16px;
-}
-
-/* .article-metadata {
-  padding-bottom: 1px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid #e3e3e3
-}
-
-.article-metadata a:hover {
-  color: #333;
-  text-decoration: none;
-} */
-
-.article-svg {
-  width: 25px;
-  height: 25px;
-  vertical-align: middle;
-}
-
-.account-img {
-  height: 125px;
-  width: 125px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-}
-
-.account-heading {
-  font-size: 2.5rem;
 }

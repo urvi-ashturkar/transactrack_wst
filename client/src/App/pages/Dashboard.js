@@ -72,13 +72,6 @@ const Dashboard = () => {
   }
 
   function handleSubmit(e) {
-    // let corr_date = new Date(e.date.replace(/-/g, '\/').replace(/T.+/, ''));
-    // let clipped_date = String(corr_date).slice(0,10);
-    // console.log(e.date, clipped_date);
-    // var curr = new Date();
-    // var set = new Date(curr.getTime() + 86400000);
-    // var date = set.getFullYear().toString() + "-" + (set.getMonth() + 1).toString().padStart(2, "0") + "-" + set.getDate().toString().padStart(2, "0");
-
     const txn_info = {
       txn_id: e.txn_no,
       date: e.date,
@@ -116,7 +109,6 @@ const Dashboard = () => {
     axios
       .post("http://localhost:5000/dashboard/edit", txn_info)
       .then((res) => {
-        console.log(user_details);
         reactLocalStorage.setObject("user_details", user_details);
         history.push("/dashboard");
       })
@@ -260,7 +252,7 @@ const Dashboard = () => {
     <React.Fragment>
       <Navbar color="dark" dark expand="sm" className="mb-5" fixed="top">
         <Container>
-          <NavbarBrand className="mr-auto" href="/dashboard">
+          <NavbarBrand className="mr-auto">
             {user_details.portfolio ?
               <span>
                 <b>Dashboard</b> &nbsp;&nbsp; {user_details.first_name} {user_details.last_name} &nbsp; | &nbsp; {user_details.position}, {user_details.portfolio}

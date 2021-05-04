@@ -206,6 +206,7 @@ class Register extends Component {
       <div className="App">
         {this.renderRedirect()}
         <main role="main" className="container">
+        <h1 className="title">TransacTrack</h1>
           <div className="row" id="reg-content">
             <div className="col-12 col-md-6">
               <img src={cover} id="cover" alt="graphic" width="100%" />
@@ -421,7 +422,7 @@ class Register extends Component {
                 <div className="form-group">
                   <button
                     type="submit"
-                    className="btn btn-info"
+                    className="btn btn-blue"
                     onMouseDown={() => this.setState({ submitCalled: true })}
                   >
                     Sign Up

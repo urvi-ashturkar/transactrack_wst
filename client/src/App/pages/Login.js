@@ -43,6 +43,7 @@ const Login = () => {
   return (
     <div className="App">
       <main role="main" className="container">
+      <h1 className="title">TransacTrack</h1>
         <div className="row" id="login-content">
           <div className="col-12 col-md-8">
             <img src={cover} id="cover" alt="graphic" width="100%" />
@@ -77,7 +78,7 @@ const Login = () => {
               <div className="form-group">
                 <button
                   type="submit"
-                  className="btn btn-info"
+                  className="btn btn-blue"
                 >
                   Submit
                 </button>
