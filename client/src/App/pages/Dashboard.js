@@ -37,7 +37,6 @@ const Dashboard = () => {
     return (today - ip) >= 0;
   }
 
-console.log(user_details);
   const mis_param = user_details.mis;
   const pos = user_details.position;
   const portf = user_details.portfolio;
@@ -73,6 +72,9 @@ console.log(user_details);
   }
 
   function handleSubmit(e) {
+    // let corr_date = new Date(e.date.replace(/-/g, '\/').replace(/T.+/, ''));
+    // let clipped_date = String(corr_date).slice(0,10);
+    // console.log(e.date, clipped_date);
     const txn_info = {
       txn_id: e.txn_no,
       date: e.date,
@@ -86,13 +88,12 @@ console.log(user_details);
     axios
       .post("http://localhost:5000/dashboard", txn_info)
       .then((res) => {
-        console.log(user_details);
         reactLocalStorage.setObject("user_details", user_details);
         history.push("/dashboard");
       })
       .catch((err) => {
         console.log("fail" + err);
-        alert("A transaction already exists with this Transaction ID.\n");
+        alert("A transaction already exists with this Transaction ID.\n1");
       });
     setModalOpen(false);
   }
@@ -117,11 +118,11 @@ console.log(user_details);
       })
       .catch((err) => {
         console.log("fail" + err);
-        alert("A transaction already exists with this Transaction ID.\n");
+        alert("Record edit failed.\nPlease try again later.\n");
       });
       setEditModalOpen(false);
   }
-  
+
   function handleDelete(e, transac_id) {
     var confirmation = window.confirm("Are you sure you want to delete this record?\nThis action cannot be undone.");
 
@@ -160,7 +161,19 @@ console.log(user_details);
 
   }
 
-  function toggle_edit(){
+  function toggle_edit(txn){
+    if(modal_edit_open === false){
+      let txn_to_edit = {
+        txn_no : txn.transaction_id,
+        date : String(txn.transaction_date).slice(0,10),
+        vendor : txn.vendor,
+        gst_no : txn.gst_no,
+        amount : txn.amount,
+        memo : txn.memo
+      }
+      console.log(txn_to_edit);
+      reactLocalStorage.setObject("txn_to_edit", txn_to_edit);
+    }
     setEditModalOpen(!modal_edit_open);
   }
 
@@ -182,108 +195,7 @@ console.log(user_details);
                 {!txn.mis || txn.mis === reactLocalStorage.getObject("user_details").mis
                   ?
                   <Col>
-                    <i className="bi bi-pencil-square" onClick={toggle_edit}></i>
-                    <Modal
-          isOpen={modal_edit_open}
-          toggle={toggle_edit}
-        >
-          <ModalHeader>Edit Transaction</ModalHeader>
-          <ModalBody>
-            <LocalForm
-              model="e"
-              onSubmit={ (e) => handleEdit(e, txn.transaction_id) }
-            >
-              <Row className="form-group ml-1 mr-1">
-                <label htmlFor="txn_no">Transaction Reference ID</label>
-                <Control.text model=".txn_no" name="txn_no" className="form-control" value={txn.transaction_id} disabled={true}
-                  />
-              </Row>
-              <Row className="form-group ml-1 mr-1">
-                <label>Transaction Date</label>
-                <Control.text model=".date" name="date" placeholder="YYYY-MM-DD" className="form-control" 
-                validators={{
-                  required, isPast, matchPattern: matchPattern(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)
-                }}/>
-                <Errors
-                  className="text-danger"
-                  model=".date"
-                  show="touched"
-                  messages={{
-                    required: 'Required. ',
-                    isPast: 'Recording future transactions not allowed. ',
-                    matchPattern: 'Invalid date. '
-                  }}
-                />
-              </Row>
-              <Row className="form-group ml-1 mr-1">
-                <label htmlFor="vendor">Vendor</label>
-                <Control.text model=".vendor" name="vendor" className="form-control"
-                validators={{
-                  required
-                }}/>
-                <Errors
-                  className="text-danger"
-                  model=".vendor"
-                  show="touched"
-                  messages={{
-                    required: 'Required. '
-                  }}
-                />
-              </Row>
-              <Row className="form-group ml-1 mr-1">
-                <label htmlFor="gst_no">GST No.</label>
-                <Control.text model=".gst_no" name="gst_no" className="form-control"
-                validators={{
-                  required, isLength: isLength(15), matchPattern: matchPattern(/[0-9][0-9][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9]Z[0-9A-Z]/)
-                }}/>
-                <Errors
-                  className="text-danger"
-                  model=".gst_no"
-                  show="touched"
-                  messages={{
-                    required: 'Required. ',
-                    isLength: 'Must be 15 characters long. ',
-                    matchPattern: 'Invalid GST No. '
-                  }}
-                />
-              </Row>
-              <Row className="form-group ml-1 mr-1">
-                <label htmlFor="amount">Transaction Amount (-ve for expenditure)</label>
-                <Control.text model=".amount" name="amount" className="form-control"
-                validators={{
-                  required, matchPattern: matchPattern(/^-?[0-9]\d*(\.\d{1,2})?$/)
-                }}/>
-                <Errors
-                  className="text-danger"
-                  model=".amount"
-                  show="touched"
-                  messages={{
-                    required: 'Required. ',
-                    matchPattern: 'Invalid amount. '
-                  }}
-                />
-              </Row>
-              <Row className="form-group ml-1 mr-1">
-                <label htmlFor="memo">Brief memo of transaction</label>
-                <Control.textarea model=".memo" name="memo" className="form-control"
-                validators={{
-                  required, isLength: maxLength(200)
-                }}/>
-                <Errors
-                  className="text-danger"
-                  model=".memo"
-                  show="touched"
-                  messages={{
-                    required: 'Required. ',
-                    maxLength: 'Must be less than 200 characters long. '
-                  }}
-                />
-              </Row>
-              <Button className="btn btn-success row-btns" type="submit">Save</Button>
-              <Button className="btn btn-default row-btns" onClick={toggle_edit}>Cancel</Button>
-            </LocalForm>
-          </ModalBody>
-        </Modal>
+                    <i className="bi bi-pencil-square" onClick={() => toggle_edit(txn)}></i>
                     &emsp;&emsp;&emsp;
                     <i className="bi bi-trash" onClick={(e) => handleDelete(e, txn.transaction_id)}></i>
                   </Col>
@@ -321,7 +233,6 @@ console.log(user_details);
                       </Col>
                       :
                       null
-
                   }
                 </Row>
               </Card.Body>
@@ -369,10 +280,7 @@ console.log(user_details);
             {transactions_list}
           </Col>
         </Row>
-        <Modal
-          isOpen={modal_open}
-          toggle={toggle}
-        >
+        <Modal isOpen={modal_open} toggle={toggle} >
           <ModalHeader>Record New Transaction</ModalHeader>
           <ModalBody>
             <LocalForm
@@ -484,7 +392,105 @@ console.log(user_details);
           </ModalBody>
         </Modal>
 
-        
+        <Modal isOpen={modal_edit_open} toggle={toggle_edit} >
+          <ModalHeader>Edit Transaction</ModalHeader>
+          <ModalBody>
+            <LocalForm
+              model="e"
+              onSubmit={ (e) => handleEdit(e, reactLocalStorage.getObject("txn_to_edit").txn_no) }
+              initialState={ reactLocalStorage.getObject("txn_to_edit") }
+            >
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="txn_no">Transaction Reference ID</label>
+                <Control.text model=".txn_no" name="txn_no" className="form-control" disabled={true}
+                  />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label>Transaction Date</label>
+                <Control.text model=".date" name="date" className="form-control"
+                validators={{
+                  required, isPast, matchPattern: matchPattern(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)
+                }}/>
+                <Errors
+                  className="text-danger"
+                  model=".date"
+                  show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    isPast: 'Recording future transactions not allowed. ',
+                    matchPattern: 'Invalid date. '
+                  }}
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="vendor">Vendor</label>
+                <Control.text model=".vendor" name="vendor" className="form-control"
+                validators={{
+                  required
+                }}/>
+                <Errors
+                  className="text-danger"
+                  model=".vendor"
+                  show="touched"
+                  messages={{
+                    required: 'Required. '
+                  }}
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="gst_no">GST No.</label>
+                <Control.text model=".gst_no" name="gst_no" className="form-control"
+                validators={{
+                  required, isLength: isLength(15), matchPattern: matchPattern(/[0-9][0-9][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9]Z[0-9A-Z]/)
+                }}/>
+                <Errors
+                  className="text-danger"
+                  model=".gst_no"
+                  show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    isLength: 'Must be 15 characters long. ',
+                    matchPattern: 'Invalid GST No. '
+                  }}
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="amount">Transaction Amount (-ve for expenditure)</label>
+                <Control.text model=".amount" name="amount" className="form-control"
+                validators={{
+                  required, matchPattern: matchPattern(/^-?[0-9]\d*(\.\d{1,2})?$/)
+                }}/>
+                <Errors
+                  className="text-danger"
+                  model=".amount"
+                  show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    matchPattern: 'Invalid amount. '
+                  }}
+                />
+              </Row>
+              <Row className="form-group ml-1 mr-1">
+                <label htmlFor="memo">Brief memo of transaction</label>
+                <Control.textarea model=".memo" name="memo" className="form-control"
+                validators={{
+                  required, isLength: maxLength(200)
+                }}/>
+                <Errors
+                  className="text-danger"
+                  model=".memo"
+                  show="touched"
+                  messages={{
+                    required: 'Required. ',
+                    maxLength: 'Must be less than 200 characters long. '
+                  }}
+                />
+              </Row>
+              <Button className="btn btn-success row-btns" type="submit">Save</Button>
+              <Button className="btn btn-default row-btns" onClick={toggle_edit}>Cancel</Button>
+            </LocalForm>
+          </ModalBody>
+        </Modal>
 
       </main>
     </React.Fragment>

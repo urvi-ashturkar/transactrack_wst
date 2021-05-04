@@ -3,7 +3,6 @@ const Router = express.Router();
 const con = require("../connection");
 //var extend = require("util")._extend;
 
-//Router to GET specific learner detail from the MySQL database
 Router.get("/", (req, res) => {
   if(req.query.position === "Secretary"){
     q =
@@ -28,21 +27,6 @@ Router.get("/", (req, res) => {
     } else{
       console.log(err);
       res.status(400).send([{ message: `Some issue: ${err}\nTry again.`}]);
-    }
-  });
-});
-
-
-Router.post("/delete", (req, res) => {
-  query = `DELETE FROM transactions WHERE transaction_id = "${req.body.txn_id}"`;
-  con.query(query, (err, result) => {
-    if(!err){
-      let string = JSON.stringify(result);
-      let json = JSON.parse(string);
-      res.status(200).send(json);
-    }
-    else{
-      res.status(400).send(err.message);
     }
   });
 });
