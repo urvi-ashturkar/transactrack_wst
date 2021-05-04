@@ -75,6 +75,10 @@ const Dashboard = () => {
     // let corr_date = new Date(e.date.replace(/-/g, '\/').replace(/T.+/, ''));
     // let clipped_date = String(corr_date).slice(0,10);
     // console.log(e.date, clipped_date);
+    // var curr = new Date();
+    // var set = new Date(curr.getTime() + 86400000);
+    // var date = set.getFullYear().toString() + "-" + (set.getMonth() + 1).toString().padStart(2, "0") + "-" + set.getDate().toString().padStart(2, "0");
+
     const txn_info = {
       txn_id: e.txn_no,
       date: e.date,
@@ -177,6 +181,16 @@ const Dashboard = () => {
     setEditModalOpen(!modal_edit_open);
   }
 
+  function getTheDate(txn_date){
+    let a = String(txn_date).slice(0,8);
+    let x = Number(String(txn_date).slice(8,10)) + 1;
+    if(x<10 && x>0){
+      a = a.concat("0");
+    }
+    let res = a.concat(x);
+    return res;
+  }
+
   const transactions_list = transactions.map((txn) => (
     <React.Fragment key={txn.transaction_id}>
       <Accordion defaultActiveKey="0">
@@ -211,7 +225,7 @@ const Dashboard = () => {
                 <p className="txn-memo">{txn.memo}</p>
                 <Row className="txn-pills">
                   <Col sm={3}>
-                    <span className="badge badge-pill badge-lt-blue">{String(txn.transaction_date).slice(0,10)}</span>
+                    <span className="badge badge-pill badge-lt-blue">{getTheDate(txn.transaction_date)}</span>
                   </Col>
                   {txn.first_name
                     ?
@@ -456,6 +470,7 @@ const Dashboard = () => {
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="amount">Transaction Amount (-ve for expenditure)</label>
+                <p>✏️Please re-enter the amount (if same) for confirmation.</p>
                 <Control.text model=".amount" name="amount" className="form-control"
                 validators={{
                   required, matchPattern: matchPattern(/^-?[0-9]\d*(\.\d{1,2})?$/)
