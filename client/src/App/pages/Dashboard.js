@@ -90,7 +90,7 @@ const Dashboard = () => {
       })
       .catch((err) => {
         console.log("fail" + err);
-        alert("A transaction already exists with this Transaction ID.\n1");
+        alert("Invalid data.\nTransaction ID must be unique and date must not be earlier than 2010.\n");
       });
     setModalOpen(false);
   }
@@ -161,10 +161,9 @@ const Dashboard = () => {
     if(modal_edit_open === false){
       let txn_to_edit = {
         txn_no : txn.transaction_id,
-        date : String(txn.transaction_date).slice(0,10),
+        date : getTheDate(txn.transaction_date),
         vendor : txn.vendor,
         gst_no : txn.gst_no,
-        amount : txn.amount,
         memo : txn.memo
       }
       console.log(txn_to_edit);
@@ -286,6 +285,7 @@ const Dashboard = () => {
             {transactions_list}
           </Col>
         </Row>
+        <br></br><br></br><br></br>
         <Modal isOpen={modal_open} toggle={toggle} >
           <ModalHeader>Record New Transaction</ModalHeader>
           <ModalBody>
@@ -312,7 +312,6 @@ const Dashboard = () => {
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label>Transaction Date</label>
-                {/*<Input type="date" model=".date" name="date" className="form-control" />*/}
                 <Control.text model=".date" name="date" placeholder="YYYY-MM-DD" className="form-control"
                 validators={{
                   required, isPast, matchPattern: matchPattern(/^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/)
@@ -462,8 +461,9 @@ const Dashboard = () => {
               </Row>
               <Row className="form-group ml-1 mr-1">
                 <label htmlFor="amount">Transaction Amount (-ve for expenditure)</label>
-                <p>✏️Please re-enter the amount (if same) for confirmation.</p>
+                <p></p>
                 <Control.text model=".amount" name="amount" className="form-control"
+                placeholder="✏️Please re-enter for confirmation."
                 validators={{
                   required, matchPattern: matchPattern(/^-?[0-9]\d*(\.\d{1,2})?$/)
                 }}/>
