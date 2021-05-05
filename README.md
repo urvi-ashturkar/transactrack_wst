@@ -1,68 +1,74 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# TransacTrack : Transaction Manager for College Fests
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+### 📝 Table of Contents
 
-### `yarn start`
+- [Description](#-description)
+- [How To Use](#how-to-use)
+- [Demonstration](#-demonstration)
+- [Acknowledgements](#-acknowledgements)
+- [Authors](#-author-info)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 🔠 Description
 
-### `yarn test`
+Financial transactions are an important part of any college fest. TransacTrack is a web application that makes it easy to keep a track of all transactions made by all the portfolios. It has an intuitive UI and is easy to use.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `yarn build`
+#### 💻 Technologies
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Backend Framework: Express.js in Node environment.
+- Frontend Library: React.js
+- Database: MySQL.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+<!-- [Back To The Top](#read-me-template) -->
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `yarn eject`
+## How To Use
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### 🔧 Installation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Clone the repo
+- Enter the details of your database in config.js file
+- Make sure that client runs on localhost:3000 and server runs on localhost:5000
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Backend:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+cd server
+npm install
+nodemon server.js
+```
 
-## Learn More
+Front-end:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd client
+npm install
+npm run start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- ![Project Image](eduapp/src/install1)
+![Project Image](eduapp/src/install2) -->
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+#### 💥 Enjoy the Application!
+- Register for your position and portfolio
+- Log in and record any transactions that you've made. 
+- You can edit as well as delete your transactions log.
+- The secretary and the head of accounts can view all transactions.
+- Only the user themselves can edit or delete their transactions.
 
-### Analyzing the Bundle Size
+---
+## 🖋️ Authors <a name = "authors"></a>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- [@Mugdha0210](https://github.com/Mugdha0210)
+- [@Urvi2904](https://github.com/Urvi2904)
 
-### Making a Progressive Web App
+<!-- [Back To The Top](#read-me-template) -->
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+---
